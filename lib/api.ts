@@ -8,7 +8,7 @@ const API_KEY = process.env.BACKEND_API_KEY;
 function getHeaders() {
     return {
         "Content-Type": "application/json",
-        "x-api-key": API_KEY || "",
+        "X-API-Key": API_KEY || "",
     };
 }
 

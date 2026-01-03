@@ -20,7 +20,7 @@ export default function Home() {
         </h1>
 
         <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          الأداة الأكثر تطوراً للمعلمين لتوليد أسئلة اختبارات عالية الجودة ومتوافقة مع المنهج الدراسي تلقائياً.
+          الأداة الأكثر تطوراً للمعلمين والطلاب لتوليد أسئلة اختبارات عالية الجودة ومتوافقة مع المنهج الدراسي تلقائياً.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">

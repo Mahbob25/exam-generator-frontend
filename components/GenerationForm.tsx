@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { fetchTopics, generateQuestions, fetchMetadata } from "@/lib/api";
 import TopicSelector from "./TopicSelector";
+import CustomSelect from "./CustomSelect";
 import { Loader2, Sparkles, BookOpen, GraduationCap } from "lucide-react";
 import { clsx } from "clsx";
 import { useToast } from "./Toast";
@@ -176,62 +177,37 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
         >
             {/* Grade & Subject Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Grade Selector */}
                 <div className="space-y-3">
                     <label className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
                         <GraduationCap size={18} />
                         الصف الدراسي
                     </label>
-                    <div className="flex gap-2 p-1 bg-muted/30 rounded-xl overflow-x-auto">
-                        {availableGrades.length > 0 ? (
-                            availableGrades.map((g) => (
-                                <button
-                                    key={g}
-                                    type="button"
-                                    onClick={() => setGrade(g)}
-                                    className={clsx(
-                                        "flex-1 py-2 rounded-lg text-sm font-medium transition-all shadow-sm min-w-[80px]",
-                                        grade === g
-                                            ? "bg-white dark:bg-zinc-800 text-primary shadow"
-                                            : "text-muted-foreground hover:bg-white/50 dark:hover:bg-zinc-800/50"
-                                    )}
-                                >
-                                    الصف {g}
-                                </button>
-                            ))
-                        ) : (
-                            <div className="p-2 text-sm text-muted-foreground">جاري التحميل...</div>
-                        )}
-                    </div>
+                    <CustomSelect
+                        value={grade}
+                        onChange={(val) => setGrade(Number(val))}
+                        options={availableGrades.map(g => ({ value: g, label: `الصف ${g}` }))}
+                        placeholder="اختر الصف"
+                        icon={<GraduationCap size={16} />}
+                    />
                 </div>
 
+                {/* Subject Selector */}
                 <div className="space-y-3">
                     <label className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
                         <BookOpen size={18} />
                         المادة
                     </label>
-                    <div className="grid grid-cols-2 gap-2">
-                        {availableSubjects[grade]?.length > 0 ? (
-                            availableSubjects[grade].map((s) => (
-                                <button
-                                    key={s.id}
-                                    type="button"
-                                    onClick={() => setSubject(s.id)}
-                                    className={clsx(
-                                        "py-2 px-3 rounded-lg text-sm font-medium transition-all border text-center",
-                                        subject === s.id
-                                            ? "border-primary bg-primary/5 text-primary"
-                                            : "border-transparent bg-muted/30 text-muted-foreground hover:bg-muted/50"
-                                    )}
-                                >
-                                    {s.name}
-                                </button>
-                            ))
-                        ) : (
-                            <div className="p-2 text-sm text-muted-foreground col-span-2 text-center border border-dashed rounded bg-muted/20">
-                                {availableGrades.length === 0 ? "جاري التحميل..." : "لا توجد مواد"}
-                            </div>
-                        )}
-                    </div>
+                    <CustomSelect
+                        value={subject}
+                        onChange={(val) => setSubject(String(val))}
+                        options={
+                            availableSubjects[grade]?.map(s => ({ value: s.id, label: s.name })) || []
+                        }
+                        placeholder="اختر المادة"
+                        disabled={!availableSubjects[grade] || availableSubjects[grade].length === 0}
+                        icon={<BookOpen size={16} />}
+                    />
                 </div>
             </div>
 

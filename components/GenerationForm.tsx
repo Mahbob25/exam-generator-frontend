@@ -288,7 +288,7 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
                                 <input
                                     type="number"
                                     min={0}
-                                    className="w-full bg-background border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                                    className="w-full bg-background border rounded-lg px-3 py-2 text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                     value={counts[type.id as keyof typeof counts]}
                                     onChange={(e) => setCounts({ ...counts, [type.id]: parseInt(e.target.value) || 0 })}
                                 />

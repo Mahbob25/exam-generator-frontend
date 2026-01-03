@@ -732,6 +732,9 @@ video {
 .z-10 {
   z-index: 10;
 }
+.z-20 {
+  z-index: 20;
+}
 .z-50 {
   z-index: 50;
 }
@@ -1413,6 +1416,10 @@ video {
 .text-5xl {
   font-size: 3rem;
   line-height: 1;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 .text-lg {
   font-size: 1.125rem;

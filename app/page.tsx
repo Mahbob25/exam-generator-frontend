@@ -8,6 +8,15 @@ export default function Home() {
       {/* Background Gradients */}
       <div className="absolute top-0 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-50" />
       <div className="absolute bottom-0 -right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl opacity-50" />
+      {/* Header */}
+      <header className="absolute top-0 w-full p-6 z-20 flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+            <Sparkles size={18} />
+          </div>
+          <span className="font-bold text-xl tracking-tight">Systefiy</span>
+        </div>
+      </header>
 
       <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
 

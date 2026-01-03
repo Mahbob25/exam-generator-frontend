@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google"; // Using Cairo as requested for Arabic support
 import "./globals.css";
+import { ToastProvider } from "@/components/Toast";
 
 const cairo = Cairo({
   subsets: ["latin", "arabic"],
@@ -20,9 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body className={`${cairo.variable} font-body antialiased bg-background text-foreground`}>
-        {children}
+        <ToastProvider>
+          {children}
+        </ToastProvider>
       </body>
     </html>
   );

@@ -9,6 +9,7 @@ import { JobStatus, Question } from "@/lib/types";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useToast } from "@/components/Toast";
 
 type Stage = "SELECTION" | "GENERATING" | "RESULTS";
 
@@ -17,6 +18,7 @@ export default function GeneratePage() {
     const [jobId, setJobId] = useState<string | null>(null);
     const [settings, setSettings] = useState<{ timerEnabled: boolean; duration: number }>({ timerEnabled: false, duration: 1 });
     const [metadata, setMetadata] = useState<{ subject: string; grade: number }>({ subject: "", grade: 12 });
+    const toast = useToast();
 
     useEffect(() => {
         if (jobId) {
@@ -53,14 +55,19 @@ export default function GeneratePage() {
                     if (status.result) {
                         setQuestions(status.result);
                         setStage("RESULTS");
+                        toast.success("تم توليد الأسئلة بنجاح! 🎉");
                     }
                 } else if (status.status === "FAILED") {
                     if (intervalRef.current) clearInterval(intervalRef.current);
-                    alert(`Generation Failed: ${status.error || "Unknown Error"}`);
+                    const errorMessage = status.error || "حدث خطأ غير معروف";
+                    toast.error(`فشل توليد الأسئلة: ${errorMessage}`);
                     setStage("SELECTION");
                 }
             } catch (err) {
                 console.error("Polling error", err);
+                if (intervalRef.current) clearInterval(intervalRef.current);
+                toast.error("حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.");
+                setStage("SELECTION");
             }
         }, 2000); // Poll every 2 seconds
     };

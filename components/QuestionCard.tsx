@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, Eye, EyeOff, CheckCircle2, HelpCircle } from "lucide-react";
 import { Question, QuestionTier } from "@/lib/types";
 import { clsx } from "clsx";
+import { ArabicTextNormalizer } from "@/lib/arabicNormalizer";
 
 interface QuestionCardProps {
     question: Question;
@@ -101,8 +102,11 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
         setShowAnswer(true);
         setSelectedOption(typedAnswer);
 
-        const normalizedInput = typedAnswer.trim().toLowerCase();
-        const isCorrect = question.accepted_answers?.some(ans => ans.toLowerCase() === normalizedInput) ?? false;
+        // Use robust Arabic normalization for fill-blank validation
+        const isCorrect = ArabicTextNormalizer.isAnswerCorrect(
+            typedAnswer,
+            question.accepted_answers || []
+        );
 
         onAnswer(isCorrect);
     };
@@ -337,7 +341,14 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
                                 </h4>
                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                     {/* Explanation Text */}
-                                    {question.type === "true_false" ? (
+                                    {question.type === "fill_blank" ? (
+                                        <span className="block">
+                                            {/* For fill-blank, explanation can be a string or object */}
+                                            {typeof question.explanation === 'string'
+                                                ? question.explanation
+                                                : (question.explanation?.correct || question.explanation?.why_correct || "")}
+                                        </span>
+                                    ) : question.type === "true_false" ? (
                                         <span className="block mb-2">
                                             {/* For T/F, backend gives 'correct' (truth) and 'why_false' (misconception) */}
                                             {/* We should show the relevant info based on the correct answer */}

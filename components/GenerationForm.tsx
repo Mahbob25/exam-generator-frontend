@@ -6,6 +6,7 @@ import { fetchTopics, generateQuestions, fetchMetadata } from "@/lib/api";
 import TopicSelector from "./TopicSelector";
 import { Loader2, Sparkles, BookOpen, GraduationCap } from "lucide-react";
 import { clsx } from "clsx";
+import { useToast } from "./Toast";
 
 interface GenerationFormProps {
     onJobStarted: (
@@ -37,6 +38,7 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
     });
 
     const [timerEnabled, setTimerEnabled] = useState(false);
+    const toast = useToast();
 
     // Initial Data Load
     useEffect(() => {
@@ -63,7 +65,7 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
                 }
             } catch (e) {
                 console.error("[Form Error] Failed to load metadata", e);
-                // Fallback or Error UI
+                toast.error("فشل تحميل البيانات. يرجى تحديث الصفحة.");
             }
         }
         loadMeta();
@@ -101,7 +103,7 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
             } catch (err) {
                 console.error("[Form Error] Failed to load topics:", err);
                 if (mounted) {
-                    setError("Failed to load topics. Please try again.");
+                    setError("فشل تحميل المواضيع. يرجى المحاولة مرة أخرى.");
                     setTopics([]);
                 }
             } finally {
@@ -114,8 +116,30 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Validation
         if (selectedTopics.length === 0) {
-            setError("Please select at least one topic.");
+            toast.error("يرجى اختيار موضوع واحد على الأقل");
+            return;
+        }
+
+        // Validate question counts
+        const totalQuestions = counts.msq + counts.true_false + counts.fill_blank;
+
+        if (totalQuestions === 0) {
+            toast.error("يرجى طلب سؤال واحد على الأقل");
+            return;
+        }
+
+        // Max 15 questions per topic
+        const maxAllowed = selectedTopics.length * 15;
+
+        if (totalQuestions > maxAllowed) {
+            if (selectedTopics.length === 1) {
+                toast.error(`الحد الأقصى 15 سؤال لكل موضوع. تم طلب ${totalQuestions} سؤال`);
+            } else {
+                toast.error(`الحد الأقصى ${maxAllowed} سؤال لـ ${selectedTopics.length} مواضيع (15 لكل موضوع). تم طلب ${totalQuestions}`);
+            }
             return;
         }
 
@@ -135,9 +159,10 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
                 { timerEnabled, duration: 1 },
                 { subject, grade }
             );
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
-            setError("Failed to start generation job.");
+            const errorMessage = err?.response?.data?.detail || err?.message || "حدث خطأ غير معروف";
+            toast.error(`فشل بدء التوليد: ${errorMessage}`);
             setIsSubmitting(false);
         }
     };
@@ -266,7 +291,12 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
                 </div>
 
                 <div className="space-y-4">
-                    <label className="text-sm font-semibold text-muted-foreground mb-2 block">توزيع الأسئلة</label>
+                    <div className="flex items-center justify-between">
+                        <label className="text-sm font-semibold text-muted-foreground mb-2 block">توزيع الأسئلة</label>
+                        <span className="text-xs text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">
+                            الحد الأقصى: {selectedTopics.length * 15} سؤال ({selectedTopics.length} × 15)
+                        </span>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {[
                             { id: "msq", label: "اختيار من متعدد", icon: "🔢" },
@@ -282,7 +312,6 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
                                 <input
                                     type="number"
                                     min={0}
-                                    max={10}
                                     className="w-full bg-background border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                     value={counts[type.id as keyof typeof counts]}
                                     onChange={(e) => setCounts({ ...counts, [type.id]: parseInt(e.target.value) || 0 })}

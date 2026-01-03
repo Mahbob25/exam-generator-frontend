@@ -5,16 +5,6 @@
     "installCommand": "npm install",
     "framework": "nextjs",
     "outputDirectory": ".next",
-    "env": {
-        "NEXT_PUBLIC_API_URL": "@api_url",
-        "NEXT_PUBLIC_API_KEY": "@api_key"
-    },
-    "build": {
-        "env": {
-            "NEXT_PUBLIC_API_URL": "@api_url",
-            "NEXT_PUBLIC_API_KEY": "@api_key"
-        }
-    },
     "headers": [
         {
             "source": "/(.*)",
@@ -36,12 +26,6 @@
                     "value": "origin-when-cross-origin"
                 }
             ]
-        }
-    ],
-    "rewrites": [
-        {
-            "source": "/api/:path*",
-            "destination": "https://your-backend-url.run.app/:path*"
         }
     ]
 }

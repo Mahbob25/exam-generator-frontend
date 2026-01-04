@@ -7,9 +7,9 @@ import QuestionList from "@/components/QuestionList";
 import { pollJobStatus } from "@/lib/api";
 import { JobStatus, Question } from "@/lib/types";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/components/Toast";
+import Header from "@/components/Header";
+import FeedbackButton from "@/components/FeedbackButton";
 
 type Stage = "SELECTION" | "GENERATING" | "RESULTS";
 
@@ -151,64 +151,65 @@ export default function GeneratePage() {
     };
 
     return (
-        <main className="min-h-screen bg-background p-4 md:p-8 relative" dir="rtl">
-            {/* Simple Header */}
-            <header className="flex items-center justify-between max-w-5xl mx-auto mb-8">
-                <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors font-medium">
-                    <ArrowLeft size={20} className="rotate-180" /> {/* Rotate arrow for RTL */}
-                    العودة إلى الرئيسية
-                </Link>
+        <main className="min-h-screen bg-background relative" dir="rtl">
+            <Header />
+            <div className="p-4 md:p-8">
                 {stage === "RESULTS" && (
-                    <button
-                        onClick={handleReset}
-                        className="px-4 py-2 bg-muted text-muted-foreground rounded-lg text-sm font-medium hover:bg-muted/80 transition-colors"
-                    >
-                        البدء من جديد
-                    </button>
+                    <div className="flex justify-end max-w-5xl mx-auto mb-4">
+                        <button
+                            onClick={handleReset}
+                            className="px-4 py-2 bg-muted text-muted-foreground rounded-lg text-sm font-medium hover:bg-muted/80 transition-colors"
+                        >
+                            البدء من جديد
+                        </button>
+                    </div>
                 )}
-            </header>
 
-            <div className="max-w-5xl mx-auto">
-                <AnimatePresence mode="wait">
-                    {stage === "SELECTION" && (
-                        <motion.div
-                            key="selection"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                        >
-                            <div className="text-center mb-10 space-y-3">
-                                <h1 className="text-4xl md:text-5xl font-black font-heading bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 py-2 leading-relaxed">
-                                    تكوين الاختبار
-                                </h1>
-                                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                                    اختر الصف، المادة، والمواضيع لتوليد اختبار مخصص فوراً باستخدام الذكاء الاصطناعي.
-                                </p>
-                            </div>
-                            <GenerationForm onJobStarted={startPolling} />
-                        </motion.div>
-                    )}
+                <div className="max-w-5xl mx-auto">
+                    <AnimatePresence mode="wait">
+                        {stage === "SELECTION" && (
+                            <motion.div
+                                key="selection"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                            >
+                                <div className="text-center mb-10 space-y-3">
+                                    <h1 className="text-4xl md:text-5xl font-black font-heading bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 py-2 leading-relaxed">
+                                        تكوين الاختبار
+                                    </h1>
+                                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                                        اختر الصف، المادة، والمواضيع لتوليد اختبار مخصص فوراً باستخدام الذكاء الاصطناعي.
+                                    </p>
+                                </div>
+                                <GenerationForm onJobStarted={startPolling} />
+                            </motion.div>
+                        )}
 
-                    {stage === "RESULTS" && (
-                        <motion.div
-                            key="results"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                        >
-                            <QuestionList questions={questions} settings={settings} metadata={metadata} />
-                        </motion.div>
+                        {stage === "RESULTS" && (
+                            <motion.div
+                                key="results"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                            >
+                                <QuestionList questions={questions} settings={settings} metadata={metadata} />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                <AnimatePresence>
+                    {stage === "GENERATING" && (
+                        <LoadingOverlay
+                            status={jobStatus?.status === "PROCESSING" ? "جاري المعالجة..." : "جاري البدء..."}
+                            progress={progress || "جاري التحضير..."}
+                        />
                     )}
                 </AnimatePresence>
             </div>
 
-            <AnimatePresence>
-                {stage === "GENERATING" && (
-                    <LoadingOverlay
-                        status={jobStatus?.status === "PROCESSING" ? "جاري المعالجة..." : "جاري البدء..."}
-                        progress={progress || "جاري التحضير..."}
-                    />
-                )}
-            </AnimatePresence>
+            {/* Floating Feedback Button */}
+            <FeedbackButton currentPage="generate" />
         </main>
     );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Question } from "@/lib/types";
 import QuestionCard from "./QuestionCard";
 import ProgressBar from "./ProgressBar";
@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { clsx } from "clsx";
 
 import { saveExamResult } from "@/lib/history";
+import FeedbackButton from "./FeedbackButton";
 
 // Helper to map subject ID to Name (should ideally move to a shared constant)
 const SUBJECT_NAMES: Record<string, string> = {
@@ -138,8 +139,8 @@ export default function QuestionList({ questions, settings, metadata }: Question
     // State for History Save to prevent duplicates
     const [hasSaved, setHasSaved] = useState(false);
 
-    // Unified Completion Handler
-    const finishExam = () => {
+    // Unified Completion Handler (using useCallback to prevent stale closures)
+    const finishExam = useCallback(() => {
         if (showResults) return; // Prevent double trigger
 
         setShowResults(true);
@@ -157,7 +158,7 @@ export default function QuestionList({ questions, settings, metadata }: Question
             });
             setHasSaved(true);
         }
-    };
+    }, [showResults, metadata, hasSaved, score, shuffledQuestions.length]);
 
     // Trigger on Timer Expiry
     useEffect(() => {
@@ -165,7 +166,7 @@ export default function QuestionList({ questions, settings, metadata }: Question
         if (timeLeft <= 0) {
             finishExam();
         }
-    }, [timeLeft]);
+    }, [timeLeft, finishExam]);
 
     // Check if all answered
     useEffect(() => {
@@ -175,7 +176,7 @@ export default function QuestionList({ questions, settings, metadata }: Question
             }, 1000);
             return () => clearTimeout(timer);
         }
-    }, [answers, shuffledQuestions.length]);
+    }, [answers, shuffledQuestions.length, finishExam]);
 
     // Reset saved state on retake
     useEffect(() => {
@@ -238,6 +239,9 @@ export default function QuestionList({ questions, settings, metadata }: Question
                     />
                 )}
             </AnimatePresence>
+
+            {/* Floating Feedback Button */}
+            <FeedbackButton currentPage="results" />
         </div>
     );
 }

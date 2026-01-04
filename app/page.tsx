@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles, BrainCircuit, Zap } from "lucide-react";
+import { ArrowRight, BrainCircuit, Zap, Sparkles } from "lucide-react";
 import { clsx } from "clsx";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 
 export default function Home() {
   return (
@@ -10,14 +11,7 @@ export default function Home() {
       <div className="absolute top-0 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-50 pointer-events-none" />
       <div className="absolute bottom-0 -right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl opacity-50 pointer-events-none" />
       {/* Header */}
-      <header className="absolute top-0 w-full p-6 z-20 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
-            <Sparkles size={18} />
-          </div>
-          <span className="font-bold text-xl tracking-tight">ذاكر</span>
-        </div>
-      </header>
+      <Header variant="transparent" />
 
       <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10 pt-24 pb-24 px-6 md:px-12 flex-grow flex flex-col items-center justify-center">
 

@@ -1,5 +1,4 @@
 {
-  "/admin/index-knowledge/page": "app/admin/index-knowledge/page.js",
-  "/generate/page": "app/generate/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/generate/page": "app/generate/page.js"
 }

@@ -130,6 +130,28 @@ export async function submitQuestionFeedback(feedback: QuestionFeedback): Promis
     }
 }
 
+export async function submitGeneralFeedback(
+    feedback: { type: string; message: string; page?: string; timestamp: number; metadata?: Record<string, any> }
+): Promise<{ success: boolean; message: string; feedback_id?: string }> {
+    const url = `${API_BASE_URL}/feedback/general`;
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: getHeaders(),
+            body: JSON.stringify(feedback),
+        });
+        if (!res.ok) {
+            const errorText = await res.text();
+            console.error(`[API Error] submitGeneralFeedback failed. Status: ${res.status}, URL: ${url}, Response: ${errorText}`);
+            throw new Error(`General feedback submission failed: ${res.status} ${errorText}`);
+        }
+        return res.json();
+    } catch (error) {
+        console.error(`[API Exception] submitGeneralFeedback error:`, error);
+        throw error;
+    }
+}
+
 // Knowledge indexing types
 export interface KnowledgeIndexingRequest {
     subject: string;

@@ -78,3 +78,19 @@ export interface QuestionFeedback {
         userAnswer?: string | boolean;
     };
 }
+
+// General Feedback Types (for app-wide suggestions/issues)
+export type GeneralFeedbackType =
+    | "suggestion"
+    | "improvement"
+    | "bug_report"
+    | "feature_request"
+    | "other";
+
+export interface GeneralFeedback {
+    type: GeneralFeedbackType;
+    message: string;
+    page?: string;
+    timestamp: number;
+    metadata?: Record<string, any>;
+}

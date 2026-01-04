@@ -89,6 +89,27 @@ export async function fetchMetadata(): Promise<{ grades: number[]; subjects: Rec
     }
 }
 
+// Fetch metadata for indexing page (uses config file)
+export async function fetchIndexingMetadata(): Promise<{ grades: number[]; subjects: Record<number, { id: string; name: string }[]> }> {
+    const url = `${API_BASE_URL}/meta/indexing`;
+    try {
+        const res = await fetch(url, {
+            headers: getHeaders(),
+            cache: "no-store",
+        });
+        if (!res.ok) {
+            const text = await res.text();
+            console.error(`[API Error] fetchIndexingMetadata failed. Status: ${res.status}, URL: ${url}, Response: ${text}`);
+            throw new Error(`Failed to fetch indexing metadata: ${res.status} ${text}`);
+        }
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error(`[API Exception] fetchIndexingMetadata error:`, error);
+        throw error;
+    }
+}
+
 export async function submitQuestionFeedback(feedback: QuestionFeedback): Promise<{ success: boolean; message: string }> {
     const url = `${API_BASE_URL}/feedback`;
     try {
@@ -107,4 +128,77 @@ export async function submitQuestionFeedback(feedback: QuestionFeedback): Promis
         console.error(`[API Exception] submitQuestionFeedback error:`, error);
         throw error;
     }
+}
+
+// Knowledge indexing types
+export interface KnowledgeIndexingRequest {
+    subject: string;
+    grade: number;
+    topic: string;
+    raw_text: string;
+    metadata?: Record<string, any>;
+}
+
+export interface KnowledgeIndexingResponse {
+    job_id: string;
+    status: string;
+    message: string;
+}
+
+// Client-side API call for knowledge indexing (requires API key in params)
+export async function indexKnowledge(
+    payload: KnowledgeIndexingRequest,
+    apiKey?: string
+): Promise<KnowledgeIndexingResponse> {
+    const url = `${API_BASE_URL}/index-knowledge`;
+    try {
+        const headers: Record<string, string> = {
+            "Content-Type": "application/json",
+        };
+
+        // Use provided API key or fall back to environment variable
+        if (apiKey) {
+            headers["X-API-Key"] = apiKey;
+        } else if (API_KEY) {
+            headers["X-API-Key"] = API_KEY;
+        }
+
+        const res = await fetch(url, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            console.error(`[API Error] indexKnowledge failed. Status: ${res.status}, URL: ${url}, Response: ${errorText}`);
+            throw new Error(`Knowledge indexing failed: ${res.status} ${errorText}`);
+        }
+        return res.json();
+    } catch (error) {
+        console.error(`[API Exception] indexKnowledge error:`, error);
+        throw error;
+    }
+}
+
+// Client-side job status polling (requires API key in params)
+export async function pollJobStatusClient(jobId: string, apiKey?: string): Promise<JobStatus> {
+    const headers: Record<string, string> = {};
+
+    if (apiKey) {
+        headers["X-API-Key"] = apiKey;
+    } else if (API_KEY) {
+        headers["X-API-Key"] = API_KEY;
+    }
+
+    const res = await fetch(`${API_BASE_URL}/jobs/${jobId}`, {
+        headers,
+        cache: "no-store",
+    });
+
+    if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Failed to poll job status: ${res.status} ${errorText}`);
+    }
+    return res.json();
 }

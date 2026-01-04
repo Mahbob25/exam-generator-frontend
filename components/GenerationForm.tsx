@@ -8,6 +8,7 @@ import CustomSelect from "./CustomSelect";
 import { Loader2, Sparkles, BookOpen, GraduationCap } from "lucide-react";
 import { clsx } from "clsx";
 import { useToast } from "./Toast";
+import { getGradeDisplayName } from "@/lib/gradeUtils";
 
 interface GenerationFormProps {
     onJobStarted: (
@@ -186,7 +187,7 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
                     <CustomSelect
                         value={grade}
                         onChange={(val) => setGrade(Number(val))}
-                        options={availableGrades.map(g => ({ value: g, label: `الصف ${g}` }))}
+                        options={availableGrades.map(g => ({ value: g, label: getGradeDisplayName(g) }))}
                         placeholder="اختر الصف"
                         icon={<GraduationCap size={16} />}
                     />
@@ -288,6 +289,7 @@ export default function GenerationForm({ onJobStarted }: GenerationFormProps) {
                                 <input
                                     type="number"
                                     min={0}
+                                    max={15}
                                     className="w-full bg-background border rounded-lg px-3 py-2 text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                     value={counts[type.id as keyof typeof counts]}
                                     onChange={(e) => setCounts({ ...counts, [type.id]: parseInt(e.target.value) || 0 })}

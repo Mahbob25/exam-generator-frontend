@@ -110,7 +110,7 @@ export default function QuestionList({ questions, settings, metadata }: Question
         setShowResults(false);
 
         // Shuffle Questions and Options
-        const questionsCopy = JSON.parse(JSON.stringify(questions)); // Deep copy
+        const questionsCopy = JSON.parse(JSON.stringify(questions)) as Question[]; // Deep copy
 
         // 1. Shuffle Options for MSQ/MCQ
         questionsCopy.forEach((q: any) => {

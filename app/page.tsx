@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { ArrowRight, Sparkles, BrainCircuit, Zap } from "lucide-react";
 import { clsx } from "clsx";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background flex flex-col items-center justify-center p-6 md:p-12 relative overflow-hidden">
+    <main className="min-h-screen bg-background flex flex-col relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute top-0 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-50" />
       <div className="absolute bottom-0 -right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl opacity-50" />
@@ -14,11 +15,11 @@ export default function Home() {
           <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
             <Sparkles size={18} />
           </div>
-          <span className="font-bold text-xl tracking-tight">Systefiy</span>
+          <span className="font-bold text-xl tracking-tight">ذاكر</span>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10 pt-24">
+      <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10 pt-24 pb-24 px-6 md:px-12 flex-grow flex flex-col items-center justify-center">
 
 
         <h1 className="text-5xl md:text-7xl font-black font-heading tracking-tight text-foreground leading-[1.1]">
@@ -50,7 +51,7 @@ export default function Home() {
         </div>
 
         {/* Feature Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-16 text-right" dir="rtl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-16 text-right w-full" dir="rtl">
           {[
             { icon: BrainCircuit, title: "تحليل بالذكاء الاصطناعي", desc: "فهم عميق لمواضيع المنهج." },
             { icon: Sparkles, title: "جودة عالية", desc: "بنوك أسئلة متميزة ومراجعة." },
@@ -66,6 +67,8 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      <Footer />
     </main>
   );
 }

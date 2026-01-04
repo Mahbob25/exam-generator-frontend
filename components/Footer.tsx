@@ -27,19 +27,25 @@ export default function Footer() {
                         <h3 className="font-semibold text-foreground">تواصل معنا</h3>
                         <div className="flex justify-center md:justify-end gap-4">
                             <Link
-                                href="#"
+                                href="https://www.linkedin.com/company/systefiy/"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-10 h-10 rounded-full bg-background border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all hover:scale-110"
                             >
                                 <Linkedin size={20} />
                             </Link>
                             <Link
-                                href="#"
+                                href="https://www.instagram.com/mh.b_9?igsh=cHJjamR0cjN2Zmpv&utm_source=qr"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-10 h-10 rounded-full bg-background border flex items-center justify-center text-muted-foreground hover:text-pink-500 hover:border-pink-500/50 transition-all hover:scale-110"
                             >
                                 <Instagram size={20} />
                             </Link>
                             <Link
-                                href="#"
+                                href="https://www.facebook.com/share/1DMVyL7TzJ/?mibextid=wwXIfr"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-10 h-10 rounded-full bg-background border flex items-center justify-center text-muted-foreground hover:text-blue-600 hover:border-blue-600/50 transition-all hover:scale-110"
                             >
                                 <Facebook size={20} />

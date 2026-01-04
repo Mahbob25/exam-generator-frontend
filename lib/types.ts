@@ -57,3 +57,24 @@ export interface Question {
 export interface TopicResponse {
     topics: string[];
 }
+
+// Feedback Types
+export type FeedbackCategory =
+    | "wrong_answer"
+    | "unclear_question"
+    | "wrong_explanation"
+    | "technical_issue"
+    | "other";
+
+export interface QuestionFeedback {
+    question: Question;
+    category: FeedbackCategory;
+    comment?: string;
+    timestamp: number;
+    metadata?: {
+        subject?: string;
+        grade?: number;
+        userAnswered?: boolean;
+        userAnswer?: string | boolean;
+    };
+}

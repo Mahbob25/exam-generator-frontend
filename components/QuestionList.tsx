@@ -194,7 +194,7 @@ export default function QuestionList({ questions, settings, metadata }: Question
             >
                 <div>
                     <h2 className="text-2xl font-bold font-heading">
-                        الامتحان المولد
+                        اختبر معرفتك ✨
                     </h2>
                     {timeLeft !== null && (
                         <div className={clsx("text-sm font-mono mt-1", timeLeft < 60 ? "text-red-500 animate-pulse font-bold" : "text-muted-foreground")}>
@@ -223,6 +223,7 @@ export default function QuestionList({ questions, settings, metadata }: Question
                         question={q}
                         index={i}
                         onAnswer={(isCorrect) => handleAnswer(i, isCorrect)}
+                        metadata={metadata}
                     />
                 ))}
             </div>

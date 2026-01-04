@@ -2,14 +2,20 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp, Eye, EyeOff, CheckCircle2, HelpCircle } from "lucide-react";
-import { Question, QuestionTier } from "@/lib/types";
+import { ChevronDown, ChevronUp, Eye, EyeOff, CheckCircle2, HelpCircle, Flag } from "lucide-react";
+import { Question, QuestionTier, FeedbackCategory, QuestionFeedback } from "@/lib/types";
 import { clsx } from "clsx";
 import { ArabicTextNormalizer } from "@/lib/arabicNormalizer";
+import FeedbackModal from "./FeedbackModal";
+import { submitQuestionFeedback } from "@/lib/api";
 
 interface QuestionCardProps {
     question: Question;
     index: number;
+    metadata?: {
+        subject?: string;
+        grade?: number;
+    };
 }
 
 const tierColors: Record<QuestionTier, string> = {
@@ -26,12 +32,17 @@ const tierArabicNames: Record<QuestionTier, string> = {
     NUMBERS_STATISTICS: "أرقام وإحصائيات",
 };
 
-export default function QuestionCard({ question, index, onAnswer }: QuestionCardProps & { onAnswer: (isCorrect: boolean) => void }) {
+export default function QuestionCard({ question, index, onAnswer, metadata }: QuestionCardProps & { onAnswer: (isCorrect: boolean) => void }) {
     const [showAnswer, setShowAnswer] = useState(false);
     const [expandedExplanation, setExpandedExplanation] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string | boolean | null>(null);
     const [typedAnswer, setTypedAnswer] = useState("");
     const [isSubmitted, setIsSubmitted] = useState(false);
+
+    // Feedback state
+    const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+    const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
+    const [feedbackMessage, setFeedbackMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
     // Helper for robust text comparison
     const normalizeText = (text: string | number | boolean | null | undefined): string => {
@@ -111,6 +122,38 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
         onAnswer(isCorrect);
     };
 
+    const handleFeedbackSubmit = async (category: FeedbackCategory, comment: string) => {
+        setIsSubmittingFeedback(true);
+        try {
+            const feedback: QuestionFeedback = {
+                question,
+                category,
+                comment: comment || undefined,
+                timestamp: Date.now(),
+                metadata: {
+                    ...metadata,
+                    userAnswered: isSubmitted,
+                    userAnswer: selectedOption !== null ? String(selectedOption) : typedAnswer || undefined,
+                },
+            };
+
+            await submitQuestionFeedback(feedback);
+            setFeedbackMessage({ type: 'success', text: 'تم إرسال التقرير بنجاح. شكراً لك!' });
+            setShowFeedbackModal(false);
+
+            // Clear success message after 3 seconds
+            setTimeout(() => setFeedbackMessage(null), 3000);
+        } catch (error) {
+            console.error('Failed to submit feedback:', error);
+            setFeedbackMessage({ type: 'error', text: 'فشل إرسال التقرير. يرجى المحاولة مرة أخرى.' });
+
+            // Clear error message after 5 seconds
+            setTimeout(() => setFeedbackMessage(null), 5000);
+        } finally {
+            setIsSubmittingFeedback(false);
+        }
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -129,6 +172,13 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
                         {tierArabicNames[question.question_tier]}
                     </span>
                 </div>
+                <button
+                    onClick={() => setShowFeedbackModal(true)}
+                    className="text-muted-foreground hover:text-primary transition-colors p-2 rounded-lg hover:bg-muted/50"
+                    title="الإبلاغ عن مشكلة"
+                >
+                    <Flag size={16} />
+                </button>
                 {/* Optional: Status Indicator */}
                 {isSubmitted && (
                     <div className={clsx("text-sm font-bold flex items-center gap-2",
@@ -412,6 +462,38 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
                     )}
                 </AnimatePresence>
             </div>
+
+            {/* Feedback Modal */}
+            <FeedbackModal
+                isOpen={showFeedbackModal}
+                onClose={() => setShowFeedbackModal(false)}
+                onSubmit={handleFeedbackSubmit}
+                isSubmitting={isSubmittingFeedback}
+            />
+
+            {/* Feedback Toast Notification */}
+            <AnimatePresence>
+                {feedbackMessage && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 50 }}
+                        className="fixed bottom-6 right-6 z-50"
+                    >
+                        <div
+                            className={clsx(
+                                "px-4 py-3 rounded-lg shadow-lg border flex items-center gap-3 min-w-[250px]",
+                                feedbackMessage.type === 'success'
+                                    ? "bg-green-50 border-green-200 text-green-800 dark:bg-green-900/30 dark:border-green-800 dark:text-green-200"
+                                    : "bg-red-50 border-red-200 text-red-800 dark:bg-red-900/30 dark:border-red-800 dark:text-red-200"
+                            )}
+                        >
+                            <CheckCircle2 size={18} />
+                            <span className="text-sm font-medium">{feedbackMessage.text}</span>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 }

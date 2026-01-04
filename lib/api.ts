@@ -1,6 +1,6 @@
 "use server";
 
-import { GenerationRequest, JobResponse, JobStatus, TopicResponse } from "./types";
+import { GenerationRequest, JobResponse, JobStatus, TopicResponse, QuestionFeedback } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const API_KEY = process.env.BACKEND_API_KEY;
@@ -68,6 +68,7 @@ export async function pollJobStatus(jobId: string): Promise<JobStatus> {
     if (!res.ok) throw new Error("Failed to poll job status");
     return res.json();
 }
+
 export async function fetchMetadata(): Promise<{ grades: number[]; subjects: Record<number, { id: string; name: string }[]> }> {
     const url = `${API_BASE_URL}/meta`;
     try {
@@ -84,6 +85,26 @@ export async function fetchMetadata(): Promise<{ grades: number[]; subjects: Rec
         return data;
     } catch (error) {
         console.error(`[API Exception] fetchMetadata error:`, error);
+        throw error;
+    }
+}
+
+export async function submitQuestionFeedback(feedback: QuestionFeedback): Promise<{ success: boolean; message: string }> {
+    const url = `${API_BASE_URL}/feedback`;
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: getHeaders(),
+            body: JSON.stringify(feedback),
+        });
+        if (!res.ok) {
+            const errorText = await res.text();
+            console.error(`[API Error] submitQuestionFeedback failed. Status: ${res.status}, URL: ${url}, Response: ${errorText}`);
+            throw new Error(`Feedback submission failed: ${res.status} ${errorText}`);
+        }
+        return res.json();
+    } catch (error) {
+        console.error(`[API Exception] submitQuestionFeedback error:`, error);
         throw error;
     }
 }

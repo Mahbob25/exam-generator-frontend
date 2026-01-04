@@ -73,21 +73,53 @@ export default function IndexKnowledgeForm({ apiKey }: IndexKnowledgeFormProps) 
 
                 if (status.status === "COMPLETED") {
                     clearInterval(interval);
-                    setSuccess(`تم فهرسة المحتوى بنجاح! ${JSON.stringify(status.result, null, 2)}`);
-                    setIsSubmitting(false);
 
-                    // Reset form after success
+                    // Format success message with score report
+                    const result: any = status.result; // Use any to bypass TypeScript checking
+                    console.log("Indexing result:", result);
+
+                    if (result && result.score_report) {
+                        const scores = result.score_report.scores;
+                        const stats = result.stats;
+
+                        const successMessage = `✅ تم فهرسة المحتوى بنجاح!
+
+📊 تقييم الجودة:
+• الأمانة (Faithfulness): ${scores.faithfulness}/30
+• التغطية (Coverage): ${scores.coverage}/20
+• البنية (Structure): ${scores.structure}/20
+• جاهزية التقييم: ${scores.assessment_readiness}/20
+• الوضوح (Clarity): ${scores.clarity}/10
+━━━━━━━━━━━━━━━━━━━
+📈 المجموع الكلي: ${result.score_report.total_score}/100
+
+📚 إحصائيات التخزين:
+• عدد الأجزاء المفهرسة: ${stats.total_chunks}
+• المفاهيم الفريدة: ${stats.unique_concepts}
+• عدد التضمينات: ${result.embedding_count}`;
+
+                        setSuccess(successMessage);
+                    } else {
+                        console.warn("No score_report found in result:", result);
+                        setSuccess(`تم فهرسة المحتوى بنجاح!`);
+                    }
+
+                    setIsSubmitting(false);
+                    setJobId(null); // Clear jobId immediately to stop polling
+                    setJobStatus(""); // Clear status
+
+                    // Reset form after delay to let user see the results
                     setTimeout(() => {
                         setTopic("");
                         setRawText("");
-                        setJobId(null);
-                        setJobStatus("");
-                    }, 5000);
+                        setSuccess("");
+                    }, 10000);
                 } else if (status.status === "FAILED") {
                     clearInterval(interval);
                     setError(`فشلت العملية: ${status.error || "خطأ غير معروف"}`);
                     setIsSubmitting(false);
-                    setJobId(null);
+                    setJobId(null); // Clear jobId immediately
+                    setJobStatus(""); // Clear status
                 }
             } catch (err) {
                 console.error("Error polling job status:", err);

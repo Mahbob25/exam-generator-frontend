@@ -13,6 +13,16 @@ import { useToast } from "@/components/Toast";
 
 type Stage = "SELECTION" | "GENERATING" | "RESULTS";
 
+interface ActiveJob {
+    jobId: string;
+    settings: { timerEnabled: boolean; duration: number };
+    metadata: { subject: string; grade: number };
+    startedAt: number;
+}
+
+const ACTIVE_JOB_KEY = "active_generation_job";
+const JOB_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
+
 export default function GeneratePage() {
     const [stage, setStage] = useState<Stage>("SELECTION");
     const [jobId, setJobId] = useState<string | null>(null);
@@ -20,11 +30,43 @@ export default function GeneratePage() {
     const [metadata, setMetadata] = useState<{ subject: string; grade: number }>({ subject: "", grade: 12 });
     const toast = useToast();
 
+    // Auto-resume job on page load
     useEffect(() => {
-        if (jobId) {
-            console.log("Tracking Job ID:", jobId);
+        const savedJob = localStorage.getItem(ACTIVE_JOB_KEY);
+        if (savedJob) {
+            try {
+                const job: ActiveJob = JSON.parse(savedJob);
+
+                // Check if job is not too old (1 hour max)
+                const age = Date.now() - job.startedAt;
+                if (age < JOB_EXPIRY_MS) {
+                    console.log("Resuming job:", job.jobId);
+                    toast.info("استئناف توليد الأسئلة...");
+                    startPolling(job.jobId, job.settings, job.metadata, true);
+                } else {
+                    // Job too old, clear it
+                    localStorage.removeItem(ACTIVE_JOB_KEY);
+                }
+            } catch (e) {
+                console.error("Failed to parse saved job:", e);
+                localStorage.removeItem(ACTIVE_JOB_KEY);
+            }
         }
-    }, [jobId]);
+    }, []);
+
+    const saveJobToStorage = (jobId: string, settings: any, metadata: any) => {
+        const job: ActiveJob = {
+            jobId,
+            settings,
+            metadata,
+            startedAt: Date.now()
+        };
+        localStorage.setItem(ACTIVE_JOB_KEY, JSON.stringify(job));
+    };
+
+    const clearJobFromStorage = () => {
+        localStorage.removeItem(ACTIVE_JOB_KEY);
+    };
 
     const [jobStatus, setJobStatus] = useState<JobStatus | null>(null);
     const [questions, setQuestions] = useState<Question[]>([]);
@@ -34,12 +76,18 @@ export default function GeneratePage() {
     const startPolling = (
         id: string,
         formSettings: { timerEnabled: boolean; duration: number },
-        meta: { subject: string; grade: number }
+        meta: { subject: string; grade: number },
+        isResume: boolean = false
     ) => {
         setJobId(id);
         setSettings(formSettings);
         setMetadata(meta);
         setStage("GENERATING");
+
+        // Save job to localStorage for resume capability
+        if (!isResume) {
+            saveJobToStorage(id, formSettings, meta);
+        }
 
         // Clear any existing interval
         if (intervalRef.current) clearInterval(intervalRef.current);
@@ -58,6 +106,9 @@ export default function GeneratePage() {
                         setQuestions(status.result);
                         setStage("RESULTS");
 
+                        // Clear job from localStorage on success
+                        clearJobFromStorage();
+
                         // Only show toast once
                         if (!hasShownSuccessToast) {
                             toast.success("تم توليد الأسئلة بنجاح! 🎉");
@@ -67,6 +118,10 @@ export default function GeneratePage() {
                 } else if (status.status === "FAILED") {
                     if (intervalRef.current) clearInterval(intervalRef.current);
                     const errorMessage = status.error || "حدث خطأ غير معروف";
+
+                    // Clear job from localStorage on failure
+                    clearJobFromStorage();
+
                     toast.error(`فشل توليد الأسئلة: ${errorMessage}`);
                     setStage("SELECTION");
                 }
@@ -75,6 +130,8 @@ export default function GeneratePage() {
                 if (intervalRef.current) clearInterval(intervalRef.current);
                 toast.error("حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.");
                 setStage("SELECTION");
+
+                // Don't clear localStorage on connection error - allow retry
             }
         }, 2000); // Poll every 2 seconds
     };
@@ -90,6 +147,7 @@ export default function GeneratePage() {
         setQuestions([]);
         setJobId(null);
         setProgress("");
+        clearJobFromStorage();
     };
 
     return (

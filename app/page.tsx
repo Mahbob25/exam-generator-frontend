@@ -7,8 +7,8 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background flex flex-col relative overflow-hidden">
       {/* Background Gradients */}
-      <div className="absolute top-0 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-50" />
-      <div className="absolute bottom-0 -right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl opacity-50" />
+      <div className="absolute top-0 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-50 pointer-events-none" />
+      <div className="absolute bottom-0 -right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl opacity-50 pointer-events-none" />
       {/* Header */}
       <header className="absolute top-0 w-full p-6 z-20 flex justify-between items-center">
         <div className="flex items-center gap-2">

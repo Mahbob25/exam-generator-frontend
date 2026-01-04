@@ -164,17 +164,17 @@ export default function QuestionCard({ question, index, onAnswer, metadata }: Qu
         >
             {/* Header */}
             <div className="p-4 border-b bg-muted/20 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm flex-shrink-0">
                         {index + 1}
                     </span>
-                    <span className={clsx("px-2.5 py-0.5 rounded-full text-xs font-bold border", tierColors[question.question_tier])}>
+                    <span className={clsx("px-2.5 py-0.5 rounded-full text-xs font-bold border flex-shrink-0", tierColors[question.question_tier])}>
                         {tierArabicNames[question.question_tier]}
                     </span>
                 </div>
                 <button
                     onClick={() => setShowFeedbackModal(true)}
-                    className="text-muted-foreground hover:text-primary transition-colors p-2 rounded-lg hover:bg-muted/50"
+                    className="text-muted-foreground hover:text-primary transition-colors p-2 rounded-lg hover:bg-muted/50 flex-shrink-0"
                     title="الإبلاغ عن مشكلة"
                 >
                     <Flag size={16} />

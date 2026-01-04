@@ -908,6 +908,9 @@ video {
 .min-w-\[3rem\] {
   min-width: 3rem;
 }
+.min-w-0 {
+  min-width: 0px;
+}
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -1840,6 +1843,10 @@ video {
   background-color: hsl(var(--primary) / 0.2);
 }
 
+.hover\:bg-primary\/5:hover {
+  background-color: hsl(var(--primary) / 0.05);
+}
+
 .hover\:bg-primary\/90:hover {
   background-color: hsl(var(--primary) / 0.9);
 }
@@ -1847,10 +1854,6 @@ video {
 .hover\:bg-red-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(254 226 226 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:bg-primary\/5:hover {
-  background-color: hsl(var(--primary) / 0.05);
 }
 
 .hover\:text-blue-600:hover {

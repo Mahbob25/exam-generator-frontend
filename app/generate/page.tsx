@@ -44,6 +44,8 @@ export default function GeneratePage() {
         // Clear any existing interval
         if (intervalRef.current) clearInterval(intervalRef.current);
 
+        let hasShownSuccessToast = false; // Track if success toast was shown
+
         intervalRef.current = setInterval(async () => {
             try {
                 const status = await pollJobStatus(id);
@@ -55,7 +57,12 @@ export default function GeneratePage() {
                     if (status.result) {
                         setQuestions(status.result);
                         setStage("RESULTS");
-                        toast.success("تم توليد الأسئلة بنجاح! 🎉");
+
+                        // Only show toast once
+                        if (!hasShownSuccessToast) {
+                            toast.success("تم توليد الأسئلة بنجاح! 🎉");
+                            hasShownSuccessToast = true;
+                        }
                     }
                 } else if (status.status === "FAILED") {
                     if (intervalRef.current) clearInterval(intervalRef.current);

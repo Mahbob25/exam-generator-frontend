@@ -91,9 +91,9 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
         switch (toast.type) {
             case "success":
                 return {
-                    bg: "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800",
-                    icon: <CheckCircle2 className="text-green-600 dark:text-green-400" size={20} />,
-                    text: "text-green-900 dark:text-green-100"
+                    bg: "bg-green-100 dark:bg-green-900/30 border-green-200 dark:border-green-800",
+                    icon: <CheckCircle2 className="text-green-700 dark:text-green-400" size={20} />,
+                    text: "text-green-950 dark:text-green-50"
                 };
             case "error":
                 return {

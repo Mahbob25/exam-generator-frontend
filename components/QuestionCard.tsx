@@ -13,10 +13,10 @@ interface QuestionCardProps {
 }
 
 const tierColors: Record<QuestionTier, string> = {
-    MEMORIZATION: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/40 dark:text-blue-200 dark:border-blue-700",
-    GENERAL: "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-200 dark:border-emerald-700",
-    DIAGNOSTIC: "bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-900/40 dark:text-rose-200 dark:border-rose-700",
-    NUMBERS_STATISTICS: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/40 dark:text-purple-200 dark:border-purple-700",
+    MEMORIZATION: "bg-blue-100 text-blue-900 border-blue-200 dark:bg-blue-900/40 dark:text-blue-100 dark:border-blue-700",
+    GENERAL: "bg-emerald-100 text-emerald-900 border-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-100 dark:border-emerald-700",
+    DIAGNOSTIC: "bg-rose-100 text-rose-900 border-rose-200 dark:bg-rose-900/40 dark:text-rose-100 dark:border-rose-700",
+    NUMBERS_STATISTICS: "bg-purple-100 text-purple-900 border-purple-200 dark:bg-purple-900/40 dark:text-purple-100 dark:border-purple-700",
 };
 
 const tierArabicNames: Record<QuestionTier, string> = {
@@ -194,7 +194,7 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
                                             )}>
                                                 {key.toUpperCase()}
                                             </div>
-                                            <span className={clsx("text-sm", showStatus && isThisCorrect && "font-medium text-green-700 dark:text-green-300")}>
+                                            <span className={clsx("text-sm", showStatus && isThisCorrect && "font-medium text-green-900 dark:text-green-100")}>
                                                 {optionText}
                                             </span>
                                             {showStatus && isThisCorrect && <CheckCircle2 size={16} className="text-green-500 mr-auto" />}
@@ -242,7 +242,7 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
                                             )}>
                                                 {key.toUpperCase()}
                                             </div>
-                                            <span className={clsx("text-sm", showStatus && isThisCorrect && "font-medium text-green-700 dark:text-green-300")}>
+                                            <span className={clsx("text-sm", showStatus && isThisCorrect && "font-medium text-green-900 dark:text-green-100")}>
                                                 {optionText}
                                             </span>
                                             {showStatus && isThisCorrect && <CheckCircle2 size={16} className="text-green-500 mr-auto" />}
@@ -265,7 +265,7 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
 
                                 let statusClass = "hover:bg-muted/30";
                                 if (showStatus) {
-                                    if (isThisCorrect) statusClass = "bg-green-50 border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-800 dark:text-green-300";
+                                    if (isThisCorrect) statusClass = "bg-green-50 border-green-200 text-green-900 dark:bg-green-900/20 dark:border-green-800 dark:text-green-100";
                                     else if (isSelected) statusClass = "bg-red-50 border-red-200 text-red-700 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300";
                                     else statusClass = "opacity-50";
                                 }
@@ -298,7 +298,7 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
                                     onChange={(e) => setTypedAnswer(e.target.value)}
                                     disabled={isSubmitted}
                                     placeholder="اكتب إجابتك هنا..."
-                                    className="flex-1 p-3 rounded-md border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                    className="flex-1 p-3 rounded-md border bg-background text-base focus:outline-none focus:ring-2 focus:ring-primary/20"
                                 />
                                 <button
                                     onClick={handleFillBlankSubmit}

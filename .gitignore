@@ -9,4 +9,5 @@ out
 .vercel
 .env.production.template
 .env.example
+/.next
 

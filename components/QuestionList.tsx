@@ -25,6 +25,7 @@ interface QuestionListProps {
 }
 
 export default function QuestionList({ questions, settings, metadata }: QuestionListProps) {
+    const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
     const [score, setScore] = useState(0);
     const [answers, setAnswers] = useState<Record<number, boolean>>({});
     const [retakeCount, setRetakeCount] = useState(0);
@@ -33,15 +34,38 @@ export default function QuestionList({ questions, settings, metadata }: Question
     // Timer State
     const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
+    // Shuffle Helper
+    const shuffleArray = <T,>(array: T[]): T[] => {
+        const newArray = [...array];
+        for (let i = newArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        }
+        return newArray;
+    };
+
+    // Initialize/Reset Questions
     useEffect(() => {
-        if (settings?.timerEnabled && questions.length > 0 && !showResults) {
+        if (questions && questions.length > 0) {
+            // Initial shuffle or reset
+            // We use the original questions prop, but we might want to shuffle initially too?
+            // Usually, first load is as generated. Let's keep it as generated for first load?
+            // Or consistenly shuffle? The user asked for "retake" to shuffle.
+            // Let's just set it to questions initially.
+            // Wait, if we want to support shuffling options on retake, we need to deep copy.
+            setShuffledQuestions(questions);
+        }
+    }, [questions]);
+
+    useEffect(() => {
+        if (settings?.timerEnabled && shuffledQuestions.length > 0 && !showResults) {
             // 1 minute per question * number of questions
-            const totalSeconds = questions.length * 60;
+            const totalSeconds = shuffledQuestions.length * 60;
             setTimeLeft(totalSeconds);
         } else {
             setTimeLeft(null);
         }
-    }, [questions, settings, retakeCount]); // Reset on retake
+    }, [shuffledQuestions, settings, retakeCount]); // Reset on retake
 
     useEffect(() => {
         if (timeLeft === null || timeLeft <= 0) return;
@@ -76,7 +100,6 @@ export default function QuestionList({ questions, settings, metadata }: Question
 
         if (isCorrect) setScore(newScore);
 
-        if (isCorrect) setScore(newScore);
         // Completion handled by useEffect on 'answers' dependency now
     };
 
@@ -85,7 +108,21 @@ export default function QuestionList({ questions, settings, metadata }: Question
         setAnswers({});
         setRetakeCount(prev => prev + 1);
         setShowResults(false);
-        // Timer resets via useEffect dependency on retakeCount
+
+        // Shuffle Questions and Options
+        const questionsCopy = JSON.parse(JSON.stringify(questions)); // Deep copy
+
+        // 1. Shuffle Options for MSQ/MCQ
+        questionsCopy.forEach((q: any) => {
+            if ((q.type === 'msq' || q.type === 'mcq') && Array.isArray(q.options)) {
+                q.options = shuffleArray(q.options);
+            }
+        });
+
+        // 2. Shuffle Questions Order
+        const newShuffled = shuffleArray(questionsCopy);
+        setShuffledQuestions(newShuffled);
+
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
@@ -115,8 +152,8 @@ export default function QuestionList({ questions, settings, metadata }: Question
                 subjectName: SUBJECT_NAMES[metadata.subject] || metadata.subject,
                 grade: metadata.grade,
                 score: score,
-                total: questions.length,
-                percentage: Math.round((score / questions.length) * 100)
+                total: shuffledQuestions.length,
+                percentage: Math.round((score / shuffledQuestions.length) * 100)
             });
             setHasSaved(true);
         }
@@ -132,13 +169,13 @@ export default function QuestionList({ questions, settings, metadata }: Question
 
     // Check if all answered
     useEffect(() => {
-        if (questions.length > 0 && Object.keys(answers).length === questions.length) {
+        if (shuffledQuestions.length > 0 && Object.keys(answers).length === shuffledQuestions.length) {
             const timer = setTimeout(() => {
                 finishExam();
             }, 1000);
             return () => clearTimeout(timer);
         }
-    }, [answers, questions.length]);
+    }, [answers, shuffledQuestions.length]);
 
     // Reset saved state on retake
     useEffect(() => {
@@ -174,15 +211,15 @@ export default function QuestionList({ questions, settings, metadata }: Question
                         إعادة الامتحان
                     </button>
                     <div className="text-sm font-medium px-4 py-2 bg-muted rounded-full">
-                        النتيجة: <span className="text-primary font-bold">{score}</span> / {questions.length}
+                        النتيجة: <span className="text-primary font-bold">{score}</span> / {shuffledQuestions.length}
                     </div>
                 </div>
             </motion.div>
 
             <div className="grid gap-6">
-                {questions.map((q, i) => (
+                {shuffledQuestions.map((q, i) => (
                     <QuestionCard
-                        key={`${i}-${retakeCount}`}
+                        key={`${i}-${retakeCount}`} // Force remix on retake
                         question={q}
                         index={i}
                         onAnswer={(isCorrect) => handleAnswer(i, isCorrect)}
@@ -194,7 +231,7 @@ export default function QuestionList({ questions, settings, metadata }: Question
                 {showResults && (
                     <ResultsModal
                         score={score}
-                        total={questions.length}
+                        total={shuffledQuestions.length}
                         onRetake={handleRetake}
                         onClose={() => setShowResults(false)}
                     />

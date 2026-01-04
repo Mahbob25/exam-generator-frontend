@@ -62,10 +62,10 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
 
         let isCorrect = false;
 
-        if (question.type === "true_false") {
+        if (question.type.toLowerCase() === "true_false") {
             const boolValue = value === "True";
             isCorrect = boolValue === question.correct_answer;
-        } else if (question.type === "msq") {
+        } else if (question.type.toLowerCase() === "msq" || question.type.toLowerCase() === "mcq") {
             // Robust Comparison Logic
             const correctOptionId = question.correct_option_id || question.correct_answer;
             const correctNorm = normalizeText(correctOptionId);
@@ -194,7 +194,7 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
                                             )}>
                                                 {key.toUpperCase()}
                                             </div>
-                                            <span className={clsx("text-sm", showStatus && isThisCorrect && "font-medium text-green-900 dark:text-green-100")}>
+                                            <span className={clsx("text-sm", showStatus && isThisCorrect && "font-medium text-black dark:text-white")}>
                                                 {optionText}
                                             </span>
                                             {showStatus && isThisCorrect && <CheckCircle2 size={16} className="text-green-500 mr-auto" />}
@@ -242,7 +242,7 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
                                             )}>
                                                 {key.toUpperCase()}
                                             </div>
-                                            <span className={clsx("text-sm", showStatus && isThisCorrect && "font-medium text-green-900 dark:text-green-100")}>
+                                            <span className={clsx("text-sm", showStatus && isThisCorrect && "font-medium text-black dark:text-white")}>
                                                 {optionText}
                                             </span>
                                             {showStatus && isThisCorrect && <CheckCircle2 size={16} className="text-green-500 mr-auto" />}
@@ -265,7 +265,7 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
 
                                 let statusClass = "hover:bg-muted/30";
                                 if (showStatus) {
-                                    if (isThisCorrect) statusClass = "bg-green-50 border-green-200 text-green-900 dark:bg-green-900/20 dark:border-green-800 dark:text-green-100";
+                                    if (isThisCorrect) statusClass = "bg-green-50 border-green-200 text-black dark:bg-green-900/20 dark:border-green-800 dark:text-white";
                                     else if (isSelected) statusClass = "bg-red-50 border-red-200 text-red-700 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300";
                                     else statusClass = "opacity-50";
                                 }
@@ -341,14 +341,14 @@ export default function QuestionCard({ question, index, onAnswer }: QuestionCard
                                 </h4>
                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                     {/* Explanation Text */}
-                                    {question.type === "fill_blank" ? (
+                                    {question.type.toLowerCase() === "fill_blank" ? (
                                         <span className="block">
                                             {/* For fill-blank, explanation can be a string or object */}
                                             {typeof question.explanation === 'string'
                                                 ? question.explanation
                                                 : (question.explanation?.correct || question.explanation?.why_correct || "")}
                                         </span>
-                                    ) : question.type === "true_false" ? (
+                                    ) : question.type.toLowerCase() === "true_false" ? (
                                         <span className="block mb-2">
                                             {/* For T/F, backend gives 'correct' (truth) and 'why_false' (misconception) */}
                                             {/* We should show the relevant info based on the correct answer */}

@@ -7,6 +7,7 @@ import ProgressBar from "./ProgressBar";
 import ResultsModal from "./ResultsModal";
 import { motion, AnimatePresence } from "framer-motion";
 import { clsx } from "clsx";
+import { Flag } from "lucide-react";
 
 import { saveExamResult } from "@/lib/history";
 import FeedbackButton from "./FeedbackButton";
@@ -214,6 +215,27 @@ export default function QuestionList({ questions, settings, metadata }: Question
                     <div className="text-sm font-medium px-4 py-2 bg-muted rounded-full">
                         النتيجة: <span className="text-primary font-bold">{score}</span> / {shuffledQuestions.length}
                     </div>
+                </div>
+            </motion.div>
+
+            {/* Feedback Encouragement Banner */}
+            <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-2 border-amber-200 dark:border-amber-800 rounded-2xl p-5 mb-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow"
+                dir="rtl"
+            >
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
+                    <Flag className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                    <p className="text-base font-bold text-foreground leading-relaxed">
+                        لو حسّيت سؤال غريب، بلّغ عليه فورًا… رأيك يفرق 💛
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                        اضغط على أيقونة العلم 🚩 في رأس كل سؤال
+                    </p>
                 </div>
             </motion.div>
 

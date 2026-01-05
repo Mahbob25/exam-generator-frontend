@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/components/Toast";
 import Header from "@/components/Header";
 import FeedbackButton from "@/components/FeedbackButton";
+import { MessageCircle } from "lucide-react";
 
 type Stage = "SELECTION" | "GENERATING" | "RESULTS";
 
@@ -182,6 +183,26 @@ export default function GeneratePage() {
                                         اختر الصف، المادة، والمواضيع لتوليد اختبار مخصص فوراً باستخدام الذكاء الاصطناعي.
                                     </p>
                                 </div>
+                                {/* Beta Notice Banner */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.3 }}
+                                    className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-2xl p-5 mb-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow"
+                                    dir="rtl"
+                                >
+                                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                                        <MessageCircle className="w-6 h-6 text-white" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-base font-bold text-foreground leading-relaxed">
+                                            المنصة في مرحلة تجريبية، وملاحظتك قد تضيف فائدة 💎
+                                        </p>
+                                        <p className="text-sm text-muted-foreground mt-1">
+                                            اضغط على أيقونة الرسائل 💬 في الزاوية السفلى
+                                        </p>
+                                    </div>
+                                </motion.div>
                                 <GenerationForm onJobStarted={startPolling} />
                             </motion.div>
                         )}

@@ -1,0 +1,168 @@
+/* ExperimentSection Component Styles */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.icon {
+    font-size: 1.5rem;
+}
+
+.title {
+    font-size: 1rem;
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+.question {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: var(--color-text-primary);
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+    direction: rtl;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-border);
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: right;
+    direction: rtl;
+    width: 100%;
+}
+
+.option:hover:not(:disabled) {
+    border-color: var(--color-accent);
+    background: var(--color-accent-light);
+}
+
+.option:disabled {
+    cursor: not-allowed;
+}
+
+.selected {
+    border-color: var(--color-accent);
+    background: var(--color-accent-light);
+}
+
+.correct {
+    border-color: var(--color-success);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.incorrect {
+    border-color: var(--color-error);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.optionLetter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--color-bg-primary);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    flex-shrink: 0;
+}
+
+.selected .optionLetter {
+    background: var(--color-accent);
+    color: white;
+}
+
+.correct .optionLetter {
+    background: var(--color-success);
+    color: white;
+}
+
+.incorrect .optionLetter {
+    background: var(--color-error);
+    color: white;
+}
+
+.optionText {
+    flex: 1;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+}
+
+.feedback {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    font-weight: 500;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feedbackCorrect {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+}
+
+.feedbackIncorrect {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-error);
+}
+
+.submitButton {
+    min-width: 200px;
+}

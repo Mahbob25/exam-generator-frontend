@@ -1,0 +1,121 @@
+/* CelebrationScreen Component Styles */
+
+.container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    overflow: hidden;
+}
+
+/* Confetti Animation */
+.confetti {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.confettiPiece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: confettiFall 3s ease-in-out infinite;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Content */
+.content {
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.5s ease;
+    z-index: 1;
+}
+
+.contentVisible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.trophy {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.subtitle {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    margin: 0 0 2rem 0;
+    direction: rtl;
+}
+
+.xpContainer {
+    margin-bottom: 2rem;
+}
+
+.xpBadge {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+}
+
+.xpLabel {
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 0.25rem;
+}
+
+.xpValue {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+}
+
+.bonusText {
+    margin: 1rem 0 0 0;
+    font-size: 0.875rem;
+    color: var(--color-success);
+    font-weight: 500;
+}
+
+.continueButton {
+    min-width: 200px;
+}

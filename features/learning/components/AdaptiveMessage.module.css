@@ -1,0 +1,81 @@
+/* AdaptiveMessage Component Styles */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+    border: 2px solid var(--color-warning);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.icon {
+    font-size: 1.5rem;
+}
+
+.title {
+    font-size: 1rem;
+    color: var(--color-warning);
+    font-weight: 600;
+}
+
+.encouragement {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    margin: 0 0 1.5rem 0;
+    direction: rtl;
+}
+
+.content {
+    background: var(--color-bg-secondary);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    direction: rtl;
+}
+
+.content p {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 2;
+    color: var(--color-text-primary);
+}
+
+.tip {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    font-style: italic;
+}
+
+.continueButton {
+    min-width: 200px;
+}

@@ -1,0 +1,153 @@
+/* Dashboard Layout Styles */
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background: var(--color-bg-secondary);
+}
+
+/* Main Content Area */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin-right: var(--sidebar-width, 280px);
+    transition: margin-right 0.2s ease;
+}
+
+.mainExpanded {
+    margin-right: 72px;
+    /* Collapsed sidebar width */
+}
+
+@media (max-width: 767px) {
+    .main {
+        margin-right: 0;
+    }
+}
+
+.content {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+    .content {
+        padding: 2rem;
+    }
+}
+
+/* Mobile Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: var(--color-bg-primary);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+}
+
+.menuButton {
+    padding: 0.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.menuButton:hover {
+    background: var(--color-bg-secondary);
+}
+
+/* Logo */
+.logo,
+.sidebarLogo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--color-text-primary);
+}
+
+.sidebarLogo {
+    padding: 0.5rem 0;
+}
+
+.logoIcon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    background: rgba(var(--color-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+}
+
+.logoText {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Header Actions */
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.themeButton,
+.userButton {
+    padding: 0.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.themeButton:hover,
+.userButton:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-primary);
+}
+
+/* Sidebar Footer */
+.sidebarFooter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.logoutButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    background: transparent;
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.logoutButton:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-error);
+}

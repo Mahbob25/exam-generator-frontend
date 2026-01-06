@@ -1,0 +1,188 @@
+/* Feedback Modals Styles */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 50;
+}
+
+.modalContainer {
+    position: fixed;
+    inset: 0;
+    z-index: 51;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.modal {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-xl);
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 32rem;
+    /* lg */
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.subtitle {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+}
+
+.closeButton {
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+}
+
+.closeButton:hover {
+    color: var(--color-text-primary);
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.optionButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 2px solid var(--color-border);
+    background: var(--color-bg-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--color-text-primary);
+}
+
+.optionButton:hover:not(:disabled) {
+    background: var(--color-bg-secondary);
+    border-color: rgba(var(--color-primary-rgb), 0.5);
+}
+
+.optionSelected {
+    background: rgba(var(--color-primary-rgb), 0.1);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-primary);
+    font-size: 0.875rem;
+    resize: none;
+    min-height: 8rem;
+    transition: border-color 0.2s;
+}
+
+.textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.counter {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(var(--color-error-rgb), 0.1);
+    border: 1px solid rgba(var(--color-error-rgb), 0.2);
+    border-radius: 0.5rem;
+    color: var(--color-error);
+    font-size: 0.875rem;
+}
+
+.actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.button {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+
+.submit {
+    background: var(--color-primary);
+    color: white;
+}
+
+.submit:hover:not(:disabled) {
+    background: var(--color-primary-dark);
+}
+
+.cancel {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+}
+
+.cancel:hover:not(:disabled) {
+    background: var(--color-border);
+}
+
+.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

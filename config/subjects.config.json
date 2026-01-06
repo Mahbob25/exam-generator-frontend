@@ -1,0 +1,96 @@
+{
+    "subjects": [
+        {
+            "id": "7_science",
+            "name": "science",
+            "grade": 7,
+            "display_name": "العلوم",
+            "icon": "🔬"
+        },
+        {
+            "id": "7_math",
+            "name": "math",
+            "grade": 7,
+            "display_name": "الرياضيات",
+            "icon": "📐"
+        },
+        {
+            "id": "8_science",
+            "name": "science",
+            "grade": 8,
+            "display_name": "العلوم",
+            "icon": "🔬"
+        },
+        {
+            "id": "8_math",
+            "name": "math",
+            "grade": 8,
+            "display_name": "الرياضيات",
+            "icon": "📐"
+        }
+    ],
+    "grades": [
+        {
+            "value": 7,
+            "label": "Grade 7",
+            "label_ar": "الصف السابع"
+        },
+        {
+            "value": 8,
+            "label": "Grade 8",
+            "label_ar": "الصف الثامن"
+        },
+        {
+            "value": 9,
+            "label": "Grade 9",
+            "label_ar": "الصف التاسع"
+        },
+        {
+            "value": 10,
+            "label": "Grade 10",
+            "label_ar": "الصف العاشر"
+        },
+        {
+            "value": 11,
+            "label": "Grade 11",
+            "label_ar": "الصف الحادي عشر"
+        },
+        {
+            "value": 12,
+            "label": "Grade 12",
+            "label_ar": "الصف الثاني عشر"
+        }
+    ],
+    "subjectTypes": [
+        {
+            "value": "science",
+            "label": "Science",
+            "label_ar": "العلوم",
+            "icon": "🔬"
+        },
+        {
+            "value": "math",
+            "label": "Mathematics",
+            "label_ar": "الرياضيات",
+            "icon": "📐"
+        },
+        {
+            "value": "arabic",
+            "label": "Arabic",
+            "label_ar": "اللغة العربية",
+            "icon": "📖"
+        },
+        {
+            "value": "english",
+            "label": "English",
+            "label_ar": "اللغة الإنجليزية",
+            "icon": "🔤"
+        },
+        {
+            "value": "social",
+            "label": "Social Studies",
+            "label_ar": "الدراسات الاجتماعية",
+            "icon": "🌍"
+        }
+    ]
+}

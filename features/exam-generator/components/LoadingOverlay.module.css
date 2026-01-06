@@ -1,0 +1,188 @@
+/* LoadingOverlay Styles */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.modal {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-xl);
+    padding: 2rem;
+    width: 100%;
+    max-width: 28rem;
+    margin: 0 1rem;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.iconContainer {
+    position: relative;
+}
+
+.iconCircle {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: 4px solid rgba(var(--color-primary-rgb), 0.2);
+    border-top-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 2s linear infinite;
+}
+
+.icon {
+    color: var(--color-primary);
+}
+
+.statusContainer {
+    text-align: center;
+}
+
+.statusTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.dots {
+    display: inline-block;
+    width: 2ch;
+    text-align: left;
+}
+
+.statusProgress {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.statusTimer {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+/* Progress Bar */
+.progressContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.progressTrack {
+    width: 100%;
+    height: 0.5rem;
+    background: var(--color-bg-secondary);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progressBar {
+    height: 100%;
+    background: linear-gradient(to right, var(--color-primary), #8b5cf6);
+    position: relative;
+}
+
+.shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 1.5s linear infinite;
+}
+
+.percentText {
+    font-size: 0.75rem;
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+/* Stages */
+.stages {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0.5rem;
+}
+
+.stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stageDot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: rgba(var(--color-text-muted-rgb), 0.2);
+    transition: background 0.3s ease;
+}
+
+.stageActive .stageDot {
+    background: var(--color-primary);
+}
+
+.stageLabel {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.stageActive .stageLabel {
+    color: var(--color-text-primary);
+    opacity: 1;
+    font-weight: 500;
+}
+
+.tip {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(var(--color-bg-secondary-rgb), 0.5);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.tipText {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shimmer {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(200%);
+    }
+}

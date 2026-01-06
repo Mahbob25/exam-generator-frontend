@@ -1,0 +1,80 @@
+/* DoseSection Component Styles */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.context {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: var(--color-bg-secondary);
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    max-width: 600px;
+    width: 100%;
+}
+
+.contextIcon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.contextText {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.6;
+    direction: rtl;
+}
+
+.card {
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.content {
+    direction: rtl;
+}
+
+.text {
+    font-size: 1.125rem;
+    line-height: 2;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.media {
+    margin-top: 1.5rem;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.image,
+.video {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 0.75rem;
+}
+
+.continueButton {
+    min-width: 200px;
+}

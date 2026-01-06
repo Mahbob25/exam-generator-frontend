@@ -1,0 +1,72 @@
+/* LessonCard Component Styles */
+
+.link {
+    text-decoration: none;
+    display: block;
+}
+
+.card {
+    padding: 1rem 1.25rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateX(-4px);
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.order {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: linear-gradient(135deg, var(--color-accent) 0%, #6366f1 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.info {
+    flex: 1;
+    min-width: 0;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.arrow {
+    font-size: 1.25rem;
+    color: var(--color-text-muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.card:hover .arrow {
+    transform: translateX(-4px);
+    color: var(--color-accent);
+}
+
+/* RTL Support */
+[dir="rtl"] .card:hover {
+    transform: translateX(4px);
+}
+
+[dir="rtl"] .arrow {
+    transform: rotate(180deg);
+}
+
+[dir="rtl"] .card:hover .arrow {
+    transform: rotate(180deg) translateX(-4px);
+}

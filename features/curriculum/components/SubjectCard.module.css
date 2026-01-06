@@ -1,0 +1,69 @@
+/* SubjectCard Component Styles */
+
+.link {
+    text-decoration: none;
+    display: block;
+}
+
+.card {
+    padding: 1.25rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.info {
+    flex: 1;
+    min-width: 0;
+}
+
+.name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.grade {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+.arrow {
+    font-size: 1.5rem;
+    color: var(--color-text-muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.card:hover .arrow {
+    transform: translateX(-4px);
+    color: var(--color-accent);
+}
+
+.skeleton {
+    height: 60px;
+    background: var(--color-bg-secondary);
+    border-radius: 0.5rem;
+}
+
+/* RTL Support */
+[dir="rtl"] .arrow {
+    transform: rotate(180deg);
+}
+
+[dir="rtl"] .card:hover .arrow {
+    transform: rotate(180deg) translateX(-4px);
+}

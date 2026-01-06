@@ -1,0 +1,231 @@
+/**
+ * CSS Animations
+ * 
+ * Reusable animation keyframes and utility classes.
+ * Import this file in globals.css or layout.tsx
+ */
+
+/* ============================================
+   Keyframes
+   ============================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(-5%);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+
+    50% {
+        transform: translateY(0);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes celebrate {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   Animation Utility Classes
+   ============================================ */
+
+.animate-fade-in {
+    animation: fadeIn var(--transition-normal) ease forwards;
+}
+
+.animate-fade-out {
+    animation: fadeOut var(--transition-normal) ease forwards;
+}
+
+.animate-slide-up {
+    animation: slideInUp var(--transition-normal) ease forwards;
+}
+
+.animate-slide-down {
+    animation: slideInDown var(--transition-normal) ease forwards;
+}
+
+.animate-slide-left {
+    animation: slideInLeft var(--transition-normal) ease forwards;
+}
+
+.animate-slide-right {
+    animation: slideInRight var(--transition-normal) ease forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn var(--transition-normal) ease forwards;
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-bounce {
+    animation: bounce 1s infinite;
+}
+
+.animate-shimmer {
+    background: linear-gradient(90deg,
+            var(--color-bg-secondary) 0%,
+            var(--color-bg-tertiary) 50%,
+            var(--color-bg-secondary) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.animate-celebrate {
+    animation: celebrate 0.5s ease forwards;
+}
+
+/* ============================================
+   Transition Utilities
+   ============================================ */
+
+.transition-all {
+    transition: all var(--transition-normal);
+}
+
+.transition-colors {
+    transition: color var(--transition-fast),
+        background-color var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.transition-transform {
+    transition: transform var(--transition-normal);
+}
+
+.transition-opacity {
+    transition: opacity var(--transition-normal);
+}

@@ -1,0 +1,150 @@
+/* Settings Page Styles */
+
+.page {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.pageTitle {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-text-muted);
+}
+
+/* Section */
+.section {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
+
+.sectionTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.sectionContent {
+    padding: 1.25rem;
+}
+
+.description {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Theme Options */
+.themeOptions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+@media (max-width: 480px) {
+    .themeOptions {
+        grid-template-columns: 1fr;
+    }
+}
+
+.themeOption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-border);
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--color-text-secondary);
+}
+
+.themeOption:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.themeOption.active {
+    border-color: var(--color-primary);
+    background: rgba(var(--color-primary-rgb), 0.1);
+    color: var(--color-primary);
+}
+
+/* Setting Row */
+.settingRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+}
+
+.settingRow:not(:last-child) {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.settingLabel {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.settingValue {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+.settingDescription {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: 0.125rem;
+}
+
+/* Badge */
+.badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+    border-radius: 0.25rem;
+}
+
+/* Placeholder Card */
+.placeholderCard {
+    padding: 2rem;
+    text-align: center;
+    background: var(--color-bg-secondary);
+    border-radius: 0.5rem;
+    border: 1px dashed var(--color-border);
+}
+
+.placeholderText {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}

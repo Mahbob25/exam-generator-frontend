@@ -1,0 +1,44 @@
+/* ConceptList Component Styles */
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.skeletonCard {
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.error {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--color-text-secondary);
+}
+
+.error p {
+    margin: 0 0 0.5rem 0;
+}
+
+.errorDetail {
+    font-size: 0.875rem;
+    color: var(--color-error);
+}
+
+.empty {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--color-text-secondary);
+}
+
+.emptyIcon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.empty p {
+    margin: 0;
+    font-size: 1.125rem;
+}

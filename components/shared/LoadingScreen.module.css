@@ -1,0 +1,203 @@
+/* Loading Screen Styles */
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    z-index: 10;
+}
+
+/* Logo Animation */
+.logoWrapper {
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+}
+
+.logoIcon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #8b5cf6 100%);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 20px 40px rgba(var(--color-primary-rgb), 0.3);
+}
+
+.bookTop {
+    animation: bookWave 2s ease-in-out infinite;
+}
+
+.bookMiddle {
+    animation: bookWave 2s ease-in-out infinite;
+    animation-delay: 0.1s;
+}
+
+.bookBottom {
+    animation: bookWave 2s ease-in-out infinite;
+    animation-delay: 0.2s;
+}
+
+/* Sparkles */
+.sparkle {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+/* Brand Name */
+.brandName {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #8b5cf6 50%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 2s linear infinite;
+    background-size: 200% auto;
+}
+
+/* Bouncing Dots */
+.dotsContainer {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #8b5cf6 100%);
+    animation: bounce 0.6s ease-in-out infinite alternate;
+}
+
+/* Loading Text */
+.loadingText {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Background Circles */
+.bgCircle1,
+.bgCircle2,
+.bgCircle3 {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.bgCircle1 {
+    width: 400px;
+    height: 400px;
+    background: var(--color-primary);
+    top: -100px;
+    right: -100px;
+    animation: pulse 4s ease-in-out infinite;
+}
+
+.bgCircle2 {
+    width: 300px;
+    height: 300px;
+    background: #8b5cf6;
+    bottom: -50px;
+    left: -50px;
+    animation: pulse 5s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+.bgCircle3 {
+    width: 200px;
+    height: 200px;
+    background: #ec4899;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 3s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+/* Animations */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(-12px) scale(0.9);
+    }
+}
+
+@keyframes sparkle {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.3) rotate(180deg);
+        opacity: 0.6;
+    }
+}
+
+@keyframes bookWave {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}

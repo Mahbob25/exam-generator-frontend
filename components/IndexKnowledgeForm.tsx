@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { indexKnowledge, pollJobStatusClient, KnowledgeIndexingRequest, fetchIndexingMetadata } from "@/lib/api";
-import CustomSelect from "./CustomSelect";
-import { GraduationCap, BookOpen } from "lucide-react";
+import { Select } from "@/components/ui";
+import { GraduationCap, BookOpen, FileText } from "lucide-react";
 import { getGradeDisplayName } from "@/lib/gradeUtils";
 
 interface IndexKnowledgeFormProps {
@@ -185,13 +185,13 @@ export default function IndexKnowledgeForm({ apiKey }: IndexKnowledgeFormProps) 
                         <GraduationCap size={18} />
                         الصف الدراسي
                     </label>
-                    <CustomSelect
-                        value={grade}
-                        onChange={(val) => handleGradeChange(Number(val))}
-                        options={grades.map(g => ({ value: g, label: getGradeDisplayName(g) }))}
+                    <Select
+                        value={String(grade)}
+                        onChange={(e) => handleGradeChange(Number(e.target.value))}
+                        options={grades.map(g => ({ value: String(g), label: getGradeDisplayName(g) }))}
                         placeholder="اختر الصف"
-                        icon={<GraduationCap size={16} />}
                         disabled={isSubmitting}
+                        fullWidth
                     />
                 </div>
 
@@ -201,13 +201,13 @@ export default function IndexKnowledgeForm({ apiKey }: IndexKnowledgeFormProps) 
                         <BookOpen size={18} />
                         المادة
                     </label>
-                    <CustomSelect
+                    <Select
                         value={subject}
-                        onChange={(val) => setSubject(String(val))}
+                        onChange={(e) => setSubject(e.target.value)}
                         options={subjects.map(s => ({ value: s.id, label: s.name }))}
                         placeholder="اختر المادة"
-                        icon={<BookOpen size={16} />}
                         disabled={isSubmitting}
+                        fullWidth
                     />
                 </div>
 

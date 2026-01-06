@@ -1,0 +1,125 @@
+/* StepIndicator Component Styles */
+
+.container {
+    margin-bottom: 2rem;
+}
+
+.steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.icon {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--color-bg-secondary);
+    transition: all 0.3s ease;
+}
+
+.label {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Completed State */
+.completed .icon {
+    background: var(--color-success);
+}
+
+.completed .label {
+    color: var(--color-success);
+    font-weight: 500;
+}
+
+/* Current State */
+.current .icon {
+    background: linear-gradient(135deg, var(--color-accent) 0%, #6366f1 100%);
+    box-shadow: 0 0 0 4px var(--color-accent-light);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.current .label {
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 4px var(--color-accent-light);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px transparent;
+    }
+}
+
+/* Pending State */
+.pending .icon {
+    opacity: 0.5;
+}
+
+.pending .label {
+    opacity: 0.5;
+}
+
+/* Connector */
+.connector {
+    width: 2rem;
+    height: 2px;
+    background: var(--color-border);
+    margin: 0 0.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.connectorCompleted {
+    background: var(--color-success);
+}
+
+/* Failed Attempts */
+.attempts {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--color-warning);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .step {
+        padding: 0.25rem;
+    }
+
+    .icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.25rem;
+    }
+
+    .label {
+        font-size: 0.625rem;
+    }
+
+    .connector {
+        width: 1rem;
+    }
+}

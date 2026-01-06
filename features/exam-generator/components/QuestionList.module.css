@@ -1,0 +1,217 @@
+/* QuestionList Styles */
+
+.container {
+    max-width: 56rem;
+    /* 4xl */
+    margin: 0 auto;
+    padding-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 3rem;
+    background: rgba(var(--color-bg-secondary-rgb), 0.5);
+    border-radius: 1.5rem;
+    border: 1px dashed var(--color-border);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 1rem;
+    z-index: 10;
+    background: rgba(var(--color-bg-primary-rgb), 0.8);
+    backdrop-filter: blur(12px);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.timer {
+    font-family: monospace;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    color: var(--color-text-muted);
+}
+
+.timerUrgent {
+    color: #ef4444;
+    font-weight: 700;
+    animation: pulse 1s infinite;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.retakeLink {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.2s;
+}
+
+.retakeLink:hover {
+    color: var(--color-primary);
+}
+
+.scoreBadge {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    background: var(--color-bg-secondary);
+    border-radius: 999px;
+    color: var(--color-text-primary);
+}
+
+.scoreValue {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.banner {
+    background: linear-gradient(to right, #fffbeb, #fff7ed);
+    /* amber-50 to orange-50 */
+    border: 2px solid #fde68a;
+    /* amber-200 */
+    border-radius: 1rem;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s;
+}
+
+.banner:hover {
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme='dark'] .banner {
+    background: linear-gradient(to right, rgba(69, 26, 3, 0.2), rgba(67, 20, 7, 0.2));
+    border-color: rgba(146, 64, 14, 0.5);
+}
+
+.bannerIcon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: linear-gradient(to bottom right, #f59e0b, #ea580c);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    flex-shrink: 0;
+    color: white;
+}
+
+.bannerContent {
+    flex: 1;
+}
+
+.bannerTitle {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+}
+
+.bannerSubtitle {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-top: 0.25rem;
+}
+
+/* Floating Feedback Button */
+.floatingButton {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 40;
+    width: 3.5rem;
+    height: 3.5rem;
+    background: linear-gradient(to bottom right, var(--color-primary), #9333ea);
+    color: white;
+    border-radius: 50%;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.floatingButton:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-xl);
+}
+
+.ping {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--color-primary);
+    opacity: 0.2;
+    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    background: var(--color-text-primary);
+    color: var(--color-bg-primary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.floatingButton:hover .tooltip {
+    opacity: 1;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes ping {
+
+    75%,
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}

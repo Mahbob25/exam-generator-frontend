@@ -1,0 +1,11 @@
+/* LearningSession Component Styles */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.stepContent {
+    margin-top: 1rem;
+}

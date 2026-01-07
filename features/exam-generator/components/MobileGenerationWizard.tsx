@@ -135,23 +135,30 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
 
     return (
         <div
-            className="fixed inset-0 z-[99999] flex flex-col bg-gradient-to-b from-slate-900 via-slate-900 to-purple-950"
-            style={{ height: '100dvh' }}
+            className="fixed inset-0 z-[99999] flex flex-col"
+            style={{
+                height: '100dvh',
+                paddingTop: 'env(safe-area-inset-top, 0px)',
+                paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+                background: 'var(--wizard-bg, linear-gradient(to bottom, #0f172a, #0f172a, #1e1b4b))'
+            }}
             dir="rtl"
         >
-            {/* === HEADER === */}
-            <header className="shrink-0 px-4 pt-3 pb-4 bg-gradient-to-b from-black/20 to-transparent">
-                {/* Step title */}
+            {/* Dark/Light mode background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/10 dark:from-slate-900 dark:via-slate-900 dark:to-purple-950" />
+
+            {/* === HEADER (FIXED) === */}
+            <header className="relative shrink-0 px-4 pt-4 pb-3 border-b border-border/20">
                 <motion.div
                     key={currentStep}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-4"
                 >
-                    <h1 className="text-2xl font-bold text-white">
+                    <h1 className="text-2xl font-bold text-foreground">
                         {currentStepData?.title}
                     </h1>
-                    <p className="text-sm text-white/60 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                         الخطوة {currentStep} من {STEPS.length}
                     </p>
                 </motion.div>
@@ -169,8 +176,8 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                     <div className={cn(
                                         "w-8 h-1 rounded-full transition-all duration-500",
                                         step.id <= currentStep
-                                            ? "bg-gradient-to-r from-purple-500 to-pink-500"
-                                            : "bg-white/10"
+                                            ? "bg-primary"
+                                            : "bg-muted"
                                     )} />
                                 )}
                                 <motion.div
@@ -178,14 +185,14 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                     className={cn(
                                         "w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300",
                                         isActive
-                                            ? "bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/50"
+                                            ? "bg-primary shadow-lg shadow-primary/30 text-white"
                                             : isCompleted
-                                                ? "bg-purple-500/30 text-purple-300"
-                                                : "bg-white/10 text-white/40"
+                                                ? "bg-primary/20 text-primary"
+                                                : "bg-muted text-muted-foreground"
                                     )}
                                 >
                                     {isCompleted ? (
-                                        <Check size={20} className="text-white" strokeWidth={3} />
+                                        <Check size={20} className="text-primary" strokeWidth={3} />
                                     ) : (
                                         <Icon size={20} className={isActive ? "text-white" : ""} />
                                     )}
@@ -196,8 +203,8 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                 </div>
             </header>
 
-            {/* === CONTENT === */}
-            <main className="flex-1 overflow-y-auto px-4 pb-4">
+            {/* === CONTENT (SCROLLABLE) === */}
+            <main className="relative flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 py-4">
                 <AnimatePresence mode="wait" initial={false}>
                     <motion.div
                         key={currentStep}
@@ -210,8 +217,8 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                         {currentStep === 1 && (
                             <div className="space-y-4">
                                 {/* Grade */}
-                                <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
-                                    <label className="flex items-center gap-2 text-white font-semibold mb-3">
+                                <div className="bg-card/80 backdrop-blur-xl rounded-3xl p-5 border border-border shadow-sm">
+                                    <label className="flex items-center gap-2 text-foreground font-semibold mb-3">
                                         <span className="text-2xl">🎓</span>
                                         الصف الدراسي
                                     </label>
@@ -226,8 +233,8 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                                 className={cn(
                                                     "py-3 rounded-xl font-bold transition-all",
                                                     grade === g
-                                                        ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
-                                                        : "bg-white/10 text-white/70 hover:bg-white/20"
+                                                        ? "bg-gradient-to-r from-primary to-purple-600 text-white shadow-lg shadow-primary/30"
+                                                        : "bg-muted text-muted-foreground hover:bg-muted/80"
                                                 )}
                                             >
                                                 {g}
@@ -243,9 +250,9 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                             initial={{ opacity: 0, y: 20, scale: 0.95 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, scale: 0.95 }}
-                                            className="bg-white/5 backdrop-blur-xl rounded-3xl p-5 border border-white/10"
+                                            className="bg-card/80 backdrop-blur-xl rounded-3xl p-5 border border-border shadow-sm"
                                         >
-                                            <label className="flex items-center gap-2 text-white font-semibold mb-3">
+                                            <label className="flex items-center gap-2 text-foreground font-semibold mb-3">
                                                 <span className="text-2xl">📚</span>
                                                 المادة الدراسية
                                             </label>
@@ -257,8 +264,8 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                                         className={cn(
                                                             "py-3 px-4 rounded-xl font-medium transition-all text-sm",
                                                             subject === s.id
-                                                                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
-                                                                : "bg-white/10 text-white/70 hover:bg-white/20"
+                                                                ? "bg-gradient-to-r from-primary to-purple-600 text-white shadow-lg shadow-primary/30"
+                                                                : "bg-muted text-muted-foreground hover:bg-muted/80"
                                                         )}
                                                     >
                                                         {s.name}
@@ -276,13 +283,13 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                             <div className="space-y-4">
                                 {/* Search */}
                                 <div className="relative">
-                                    <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
+                                    <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
                                     <input
                                         type="text"
                                         placeholder="ابحث عن موضوع..."
                                         value={topicSearch}
                                         onChange={(e) => setTopicSearch(e.target.value)}
-                                        className="w-full py-3 pr-12 pl-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder:text-white/40 focus:outline-none focus:border-purple-500"
+                                        className="w-full py-3 pr-12 pl-4 bg-muted/50 border border-border rounded-2xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
                                     />
                                 </div>
 
@@ -290,13 +297,13 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => setSelectedTopics(filteredTopics)}
-                                        className="flex-1 py-2 rounded-xl bg-purple-500/20 text-purple-300 font-medium text-sm"
+                                        className="flex-1 py-2 rounded-xl bg-primary/10 text-primary font-medium text-sm"
                                     >
                                         ✓ تحديد الكل
                                     </button>
                                     <button
                                         onClick={() => setSelectedTopics([])}
-                                        className="flex-1 py-2 rounded-xl bg-white/10 text-white/60 font-medium text-sm"
+                                        className="flex-1 py-2 rounded-xl bg-muted text-muted-foreground font-medium text-sm"
                                     >
                                         ✕ إلغاء الكل
                                     </button>
@@ -305,7 +312,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                 {/* Topics grid */}
                                 {isLoadingTopics ? (
                                     <div className="flex items-center justify-center py-12">
-                                        <Loader2 className="animate-spin text-purple-400" size={32} />
+                                        <Loader2 className="animate-spin text-primary" size={32} />
                                     </div>
                                 ) : (
                                     <div className="space-y-2">
@@ -318,19 +325,19 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                                     className={cn(
                                                         "w-full p-4 rounded-2xl text-right transition-all flex items-center gap-3",
                                                         isSelected
-                                                            ? "bg-gradient-to-r from-purple-500/30 to-pink-500/30 border-2 border-purple-500"
-                                                            : "bg-white/5 border border-white/10 hover:bg-white/10"
+                                                            ? "bg-primary/10 border-2 border-primary"
+                                                            : "bg-card border border-border hover:bg-muted"
                                                     )}
                                                 >
                                                     <div className={cn(
                                                         "w-6 h-6 rounded-lg flex items-center justify-center shrink-0",
-                                                        isSelected ? "bg-purple-500" : "bg-white/10"
+                                                        isSelected ? "bg-primary" : "bg-muted"
                                                     )}>
                                                         {isSelected && <Check size={14} className="text-white" />}
                                                     </div>
                                                     <span className={cn(
                                                         "flex-1 font-medium",
-                                                        isSelected ? "text-white" : "text-white/70"
+                                                        isSelected ? "text-foreground" : "text-muted-foreground"
                                                     )}>
                                                         {topic}
                                                     </span>
@@ -352,27 +359,27 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                 ].map((type) => (
                                     <div
                                         key={type.id}
-                                        className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 flex items-center justify-between"
+                                        className="bg-card/80 backdrop-blur-xl rounded-3xl p-4 border border-border flex items-center justify-between"
                                     >
                                         <div className="flex items-center gap-3">
                                             <span className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${type.color} flex items-center justify-center text-xl`}>
                                                 {type.icon}
                                             </span>
-                                            <span className="font-medium text-white">{type.label}</span>
+                                            <span className="font-medium text-foreground">{type.label}</span>
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <button
                                                 onClick={() => setCounts({ ...counts, [type.id]: Math.max(0, counts[type.id as keyof typeof counts] - 1) })}
-                                                className="w-10 h-10 rounded-xl bg-white/10 text-white font-bold text-xl"
+                                                className="w-10 h-10 rounded-xl bg-muted text-foreground font-bold text-xl"
                                             >
                                                 −
                                             </button>
-                                            <span className="w-8 text-center text-white font-bold text-xl">
+                                            <span className="w-8 text-center text-foreground font-bold text-xl">
                                                 {counts[type.id as keyof typeof counts]}
                                             </span>
                                             <button
                                                 onClick={() => setCounts({ ...counts, [type.id]: Math.min(15, counts[type.id as keyof typeof counts] + 1) })}
-                                                className="w-10 h-10 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-xl"
+                                                className="w-10 h-10 rounded-xl bg-primary text-white font-bold text-xl"
                                             >
                                                 +
                                             </button>
@@ -381,21 +388,21 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                 ))}
 
                                 {/* Timer toggle */}
-                                <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 flex items-center justify-between">
+                                <div className="bg-card/80 backdrop-blur-xl rounded-3xl p-4 border border-border flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <span className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-xl">
                                             ⏱️
                                         </span>
                                         <div>
-                                            <div className="font-medium text-white">المؤقت</div>
-                                            <div className="text-sm text-white/50">دقيقة لكل سؤال</div>
+                                            <div className="font-medium text-foreground">المؤقت</div>
+                                            <div className="text-sm text-muted-foreground">دقيقة لكل سؤال</div>
                                         </div>
                                     </div>
                                     <button
                                         onClick={() => setTimerEnabled(!timerEnabled)}
                                         className={cn(
                                             "w-14 h-8 rounded-full transition-all relative",
-                                            timerEnabled ? "bg-gradient-to-r from-purple-500 to-pink-500" : "bg-white/20"
+                                            timerEnabled ? "bg-primary" : "bg-muted"
                                         )}
                                     >
                                         <motion.div
@@ -410,7 +417,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                         {/* Step 4: Review */}
                         {currentStep === 4 && (
                             <div className="space-y-4">
-                                <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-xl rounded-3xl p-6 border border-purple-500/30">
+                                <div className="bg-primary/5 backdrop-blur-xl rounded-3xl p-6 border border-primary/20">
                                     {[
                                         { label: 'الصف', value: `الصف ${grade}`, icon: '🎓' },
                                         { label: 'المادة', value: subjectName, icon: '📚' },
@@ -418,17 +425,17 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                         { label: 'الأسئلة', value: `${counts.msq + counts.true_false + counts.fill_blank} سؤال`, icon: '❓' },
                                         { label: 'المؤقت', value: timerEnabled ? 'مفعل' : 'معطل', icon: '⏱️' },
                                     ].map((item, i) => (
-                                        <div key={i} className="flex items-center justify-between py-3 border-b border-white/10 last:border-0">
-                                            <span className="flex items-center gap-2 text-white/60">
+                                        <div key={i} className="flex items-center justify-between py-3 border-b border-border last:border-0">
+                                            <span className="flex items-center gap-2 text-muted-foreground">
                                                 <span>{item.icon}</span>
                                                 {item.label}
                                             </span>
-                                            <span className="font-bold text-white">{item.value}</span>
+                                            <span className="font-bold text-foreground">{item.value}</span>
                                         </div>
                                     ))}
                                 </div>
 
-                                <p className="text-center text-white/50 text-sm">
+                                <p className="text-center text-muted-foreground text-sm">
                                     ✨ كل شيء جاهز للتوليد!
                                 </p>
                             </div>
@@ -437,11 +444,11 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                 </AnimatePresence>
             </main>
 
-            {/* === FOOTER === */}
-            <footer className="shrink-0 px-4 pb-4 pt-2 bg-gradient-to-t from-black/40 to-transparent">
+            {/* === FOOTER (FIXED) === */}
+            <footer className="relative shrink-0 px-4 py-4 border-t border-border bg-background/95 backdrop-blur-xl">
                 {/* Hint */}
                 {!canProceed() && (
-                    <p className="text-center text-white/40 text-sm mb-3">
+                    <p className="text-center text-muted-foreground text-sm mb-3">
                         {currentStep === 1 && "👆 اختر الصف والمادة"}
                         {currentStep === 2 && "👆 اختر موضوع واحد على الأقل"}
                     </p>
@@ -449,7 +456,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
 
                 {/* Selected count for step 2 */}
                 {currentStep === 2 && selectedTopics.length > 0 && (
-                    <p className="text-center text-purple-400 text-sm mb-3 font-medium">
+                    <p className="text-center text-primary text-sm mb-3 font-medium">
                         ✓ تم اختيار {selectedTopics.length} موضوع
                     </p>
                 )}
@@ -462,8 +469,8 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                         className={cn(
                             "px-6 py-4 rounded-2xl font-bold transition-all flex items-center gap-2",
                             currentStep === 1
-                                ? "bg-white/5 text-white/20"
-                                : "bg-white/10 text-white hover:bg-white/20"
+                                ? "bg-muted/50 text-muted-foreground/50"
+                                : "bg-muted text-foreground hover:bg-muted/80"
                         )}
                     >
                         <ChevronRight size={20} />
@@ -477,8 +484,8 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                             className={cn(
                                 "flex-1 py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2",
                                 canProceed()
-                                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30"
-                                    : "bg-white/10 text-white/30"
+                                    ? "bg-primary text-white shadow-lg shadow-primary/30"
+                                    : "bg-muted text-muted-foreground/50"
                             )}
                         >
                             التالي
@@ -488,7 +495,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                         <button
                             onClick={handleSubmit}
                             disabled={isSubmitting}
-                            className="flex-1 py-4 rounded-2xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2"
+                            className="flex-1 py-4 rounded-2xl font-bold bg-gradient-to-r from-primary via-purple-600 to-pink-500 text-white shadow-lg shadow-primary/30 flex items-center justify-center gap-2"
                         >
                             {isSubmitting ? (
                                 <><Loader2 size={20} className="animate-spin" /> جاري التوليد...</>

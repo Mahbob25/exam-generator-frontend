@@ -12,7 +12,7 @@ export default function IndexKnowledgePage() {
     // Validate API key against backend
     const validateApiKey = async (key: string): Promise<boolean> => {
         try {
-            const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+            const API_BASE_URL = process.env.NEXT_PUBLIC_EXAM_API_URL || "http://localhost:8000";
             const response = await fetch(`${API_BASE_URL}/meta`, {
                 headers: { "X-API-Key": key },
             });

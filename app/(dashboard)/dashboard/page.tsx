@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { BookOpen, Sparkles, History, Settings, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { HeroCard } from './components/HeroCard';
 
 // Get greeting based on time of day
 const getGreeting = () => {
@@ -62,24 +63,7 @@ function MobileHome() {
             </div>
 
             {/* Hero CTA */}
-            <Link
-                href="/learn"
-                className="block mx-4 mb-6 p-5 rounded-2xl bg-gradient-to-br from-primary to-purple-600 text-white shadow-lg active:scale-[0.98] transition-transform"
-            >
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h2 className="text-xl font-bold mb-1">استمر في التعلم</h2>
-                        <p className="text-sm text-white/80">تابع رحلتك التعليمية</p>
-                    </div>
-                    <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                        <BookOpen size={24} />
-                    </div>
-                </div>
-                <div className="flex items-center justify-end mt-3 text-sm text-white/80">
-                    <span>ابدأ الآن</span>
-                    <ChevronLeft size={16} />
-                </div>
-            </Link>
+            <HeroCard />
 
             {/* 2x2 Action Grid */}
             <div className="grid grid-cols-2 gap-3 px-4 mb-6">

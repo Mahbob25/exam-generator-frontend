@@ -1,21 +1,28 @@
 {
   "pages": {
-    "/page": [
+    "/(dashboard)/learn/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/css/app/(dashboard)/learn/page.css",
+      "static/chunks/app/(dashboard)/learn/page.js"
+    ],
+    "/(dashboard)/learn/loading": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(dashboard)/learn/loading.css",
+      "static/chunks/app/(dashboard)/learn/loading.js"
+    ],
+    "/(dashboard)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(dashboard)/layout.css",
+      "static/chunks/app/(dashboard)/layout.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
-    ],
-    "/(auth)/signup/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(auth)/signup/page.css",
-      "static/chunks/app/(auth)/signup/page.js"
     ],
     "/(auth)/login/page": [
       "static/chunks/webpack.js",
@@ -33,24 +40,6 @@
       "static/chunks/main-app.js",
       "static/css/app/(dashboard)/dashboard/loading.css",
       "static/chunks/app/(dashboard)/dashboard/loading.js"
-    ],
-    "/(dashboard)/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/layout.css",
-      "static/chunks/app/(dashboard)/layout.js"
-    ],
-    "/(dashboard)/learn/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/learn/page.css",
-      "static/chunks/app/(dashboard)/learn/page.js"
-    ],
-    "/(dashboard)/learn/loading": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/learn/loading.css",
-      "static/chunks/app/(dashboard)/learn/loading.js"
     ],
     "/(dashboard)/generate/page": [
       "static/chunks/webpack.js",

@@ -51,7 +51,9 @@ const DashboardHeader = () => {
     return (
         <header className={styles.header}>
             <Link href="/dashboard" className={styles.logo}>
-                <span className={styles.logoIcon}>📚</span>
+                <div className={styles.logoIcon}>
+                    <Sparkles size={18} />
+                </div>
                 <span className={styles.logoText}>ذاكر</span>
             </Link>
 

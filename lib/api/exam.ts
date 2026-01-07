@@ -16,7 +16,9 @@ import type {
     QuestionFeedback
 } from '@/lib/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { EXAM_API_URL } from './client';
+
+const API_BASE_URL = EXAM_API_URL;
 
 /**
  * API Endpoints for Exam Generator

@@ -9,7 +9,11 @@
 
 import { getFirebaseAuth } from '@/lib/firebase';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export const LEARNING_API_URL = process.env.NEXT_PUBLIC_LEARNING_API_URL || 'http://localhost:8000';
+export const EXAM_API_URL = process.env.NEXT_PUBLIC_EXAM_API_URL || 'http://localhost:8000';
+
+// Default to Learning API for backwards compatibility
+const API_BASE_URL = LEARNING_API_URL;
 
 /**
  * Custom API Error class for handling backend errors
@@ -27,6 +31,7 @@ export class ApiError extends Error {
 
 type RequestOptions = RequestInit & {
     skipAuth?: boolean;
+    baseUrl?: string;
 };
 
 /**
@@ -53,17 +58,17 @@ async function getAuthToken(): Promise<string | null> {
  * Generic API client with authentication support
  * 
  * @param endpoint - API endpoint (e.g., '/curriculum/subjects')
- * @param options - Fetch options with optional skipAuth flag
+ * @param options - Fetch options with optional skipAuth flag and baseUrl
  * @returns Promise resolving to typed response data
  * 
  * @example
- * const subjects = await apiClient<Subject[]>('/curriculum/subjects');
+ * const subjects = await apiClient<Subject[]>('/curriculum/subjects', { baseUrl: LEARNING_API_URL });
  */
 export async function apiClient<T>(
     endpoint: string,
     options: RequestOptions = {}
 ): Promise<T> {
-    const { skipAuth, ...fetchOptions } = options;
+    const { skipAuth, baseUrl, ...fetchOptions } = options;
 
     const headers: HeadersInit = {
         'Content-Type': 'application/json',
@@ -78,7 +83,8 @@ export async function apiClient<T>(
         }
     }
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const url = baseUrl ? baseUrl : API_BASE_URL;
+    const response = await fetch(`${url}${endpoint}`, {
         ...fetchOptions,
         headers,
     });

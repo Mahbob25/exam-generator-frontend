@@ -6,7 +6,7 @@
  * @see docs/frontend_api_integration_guide.md Section 5
  */
 
-import { apiClient } from './client';
+import { apiClient, LEARNING_API_URL } from './client';
 import type { Subject, Lesson, Concept } from '@/lib/types/api';
 
 /**
@@ -30,7 +30,7 @@ const ENDPOINTS = {
  * // [{ id: "7_science", name: "science", grade: 7, display_name: "العلوم", ... }]
  */
 async function getSubjects(): Promise<Subject[]> {
-    return apiClient<Subject[]>(ENDPOINTS.subjects);
+    return apiClient<Subject[]>(ENDPOINTS.subjects, { baseUrl: LEARNING_API_URL });
 }
 
 /**
@@ -45,7 +45,7 @@ async function getSubjects(): Promise<Subject[]> {
  * const lessons = await curriculumApi.getLessons("7_science");
  */
 async function getLessons(subjectId: string): Promise<Lesson[]> {
-    return apiClient<Lesson[]>(ENDPOINTS.lessons(subjectId));
+    return apiClient<Lesson[]>(ENDPOINTS.lessons(subjectId), { baseUrl: LEARNING_API_URL });
 }
 
 /**
@@ -60,7 +60,7 @@ async function getLessons(subjectId: string): Promise<Lesson[]> {
  * const concepts = await curriculumApi.getConcepts("7_science_lesson1");
  */
 async function getConcepts(lessonId: string): Promise<Concept[]> {
-    return apiClient<Concept[]>(ENDPOINTS.concepts(lessonId));
+    return apiClient<Concept[]>(ENDPOINTS.concepts(lessonId), { baseUrl: LEARNING_API_URL });
 }
 
 /**

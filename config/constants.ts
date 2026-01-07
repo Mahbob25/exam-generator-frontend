@@ -8,7 +8,10 @@
  * API Configuration
  */
 export const API_CONFIG = {
-    BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
+    // Deprecated: Usage should specify LEARNING or EXAM
+    BASE_URL: process.env.NEXT_PUBLIC_LEARNING_API_URL || 'http://localhost:8000',
+    LEARNING_BASE_URL: process.env.NEXT_PUBLIC_LEARNING_API_URL || 'http://localhost:8000',
+    EXAM_BASE_URL: process.env.NEXT_PUBLIC_EXAM_API_URL || 'http://localhost:8000',
     TIMEOUT_MS: 10000,
     RETRY_COUNT: 1,
     RETRY_DELAY_MS: 2000,

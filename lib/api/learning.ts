@@ -10,7 +10,7 @@
  * @see docs/frontend_api_integration_guide.md Section 6 & 7
  */
 
-import { apiClient } from './client';
+import { apiClient, LEARNING_API_URL } from './client';
 import type { LearningSession } from '@/lib/types/api';
 import type { LearningStep } from '@/lib/types/common';
 
@@ -80,6 +80,7 @@ async function startConcept(conceptId: string): Promise<LearningSession> {
     return apiClient<LearningSession>(ENDPOINTS.start, {
         method: 'POST',
         body: JSON.stringify(request),
+        baseUrl: LEARNING_API_URL,
     });
 }
 
@@ -104,6 +105,7 @@ async function recordFailure(conceptId: string, step: LearningStep): Promise<Fai
     return apiClient<FailureResponse>(ENDPOINTS.fail, {
         method: 'POST',
         body: JSON.stringify(request),
+        baseUrl: LEARNING_API_URL,
     });
 }
 
@@ -126,6 +128,7 @@ async function completeConcept(conceptId: string): Promise<CompleteResponse> {
     return apiClient<CompleteResponse>(ENDPOINTS.complete, {
         method: 'POST',
         body: JSON.stringify(request),
+        baseUrl: LEARNING_API_URL,
     });
 }
 

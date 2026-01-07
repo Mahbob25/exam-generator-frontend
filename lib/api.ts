@@ -2,7 +2,7 @@
 
 import { GenerationRequest, JobResponse, JobStatus, TopicResponse, QuestionFeedback } from "./types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_EXAM_API_URL || "http://localhost:8000";
 const API_KEY = process.env.BACKEND_API_KEY;
 
 function getHeaders() {

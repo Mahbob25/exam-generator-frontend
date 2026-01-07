@@ -11,6 +11,7 @@ interface ExamSelectProps {
     placeholder?: string;
     disabled?: boolean;
     icon?: React.ReactNode;
+    autoFocus?: boolean;
 }
 
 /**
@@ -25,12 +26,21 @@ export function ExamSelect({
     options,
     placeholder = "اختر...",
     disabled = false,
-    icon
+    icon,
+    autoFocus = false
 }: ExamSelectProps) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const selectedOption = options.find(opt => opt.value === value);
+
+    // Auto-open dropdown when autoFocus is true (with slight delay for animation)
+    useEffect(() => {
+        if (autoFocus && !disabled) {
+            const timer = setTimeout(() => setIsOpen(true), 350);
+            return () => clearTimeout(timer);
+        }
+    }, [autoFocus, disabled]);
 
     // Close dropdown when clicking outside
     useEffect(() => {

@@ -1,14 +1,10 @@
 {
-  "node_modules\\@tanstack\\query-devtools\\build\\dev.js -> ./DevtoolsComponent/CDWEKZTF.js": {
-    "id": "node_modules\\@tanstack\\query-devtools\\build\\dev.js -> ./DevtoolsComponent/CDWEKZTF.js",
-    "files": [
-      "static/chunks/_app-pages-browser_node_modules_tanstack_query-devtools_build_DevtoolsComponent_CDWEKZTF_js.js"
-    ]
+  "node_modules\\@tanstack\\query-devtools\\build\\index.js -> ./DevtoolsComponent/WDYDFRGG.js": {
+    "id": null,
+    "files": []
   },
-  "node_modules\\@tanstack\\query-devtools\\build\\dev.js -> ./DevtoolsPanelComponent/5A54IY5X.js": {
-    "id": "node_modules\\@tanstack\\query-devtools\\build\\dev.js -> ./DevtoolsPanelComponent/5A54IY5X.js",
-    "files": [
-      "static/chunks/_app-pages-browser_node_modules_tanstack_query-devtools_build_DevtoolsPanelComponent_5A54IY5X_js.js"
-    ]
+  "node_modules\\@tanstack\\query-devtools\\build\\index.js -> ./DevtoolsPanelComponent/2SSKDMRQ.js": {
+    "id": null,
+    "files": []
   }
 }

@@ -164,15 +164,6 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
             className="bg-background flex flex-col"
             dir="rtl"
         >
-            {/* Header */}
-            <header className="flex items-center justify-between px-4 py-3 border-b border-border/50 bg-background/80 backdrop-blur-lg safe-area-pt">
-                <button onClick={onClose} className="p-2 -m-2 rounded-full text-muted-foreground hover:text-foreground">
-                    <X size={24} />
-                </button>
-                <h1 className="text-lg font-bold">إنشاء اختبار</h1>
-                <div className="w-8" />
-            </header>
-
             {/* Progress */}
             <div className="px-4 py-3 flex items-center justify-between gap-2">
                 {STEPS.map((step, i) => {
@@ -222,15 +213,27 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                         placeholder="اختر الصف"
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium mb-2">المادة</label>
-                                    <ExamSelect
-                                        value={subject}
-                                        onChange={(val) => setSubject(String(val))}
-                                        options={availableSubjects[grade]?.map(s => ({ value: s.id, label: s.name })) || []}
-                                        placeholder="اختر المادة"
-                                    />
-                                </div>
+                                <AnimatePresence>
+                                    {grade && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20, height: 0 }}
+                                            animate={{ opacity: 1, y: 0, height: 'auto' }}
+                                            exit={{ opacity: 0, y: -10, height: 0 }}
+                                            transition={{ duration: 0.3, ease: 'easeOut' }}
+                                        >
+                                            <div>
+                                                <label className="block text-sm font-medium mb-2">المادة</label>
+                                                <ExamSelect
+                                                    value={subject}
+                                                    onChange={(val) => setSubject(String(val))}
+                                                    options={availableSubjects[grade]?.map(s => ({ value: s.id, label: s.name })) || []}
+                                                    placeholder="اختر المادة"
+                                                    autoFocus
+                                                />
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
                         )}
 

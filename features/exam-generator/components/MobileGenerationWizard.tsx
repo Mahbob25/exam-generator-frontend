@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X, Loader2, Sparkles, Check, GraduationCap, BookOpen, Settings, ClipboardList } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useExamStore } from '../store';
-import { examApi } from '@/lib/api/exam';
+import { fetchMetadata, fetchTopics, generateQuestions } from '@/lib/api/exam';
 import { useToast } from '@/components/ui';
 import { TopicSelector } from './TopicSelector';
 import { ExamSelect } from './ExamSelect';
@@ -44,7 +44,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
     useEffect(() => {
         async function loadMeta() {
             try {
-                const meta = await examApi.fetchMetadata();
+                const meta = await fetchMetadata();
                 if (!meta?.grades) return;
                 setAvailableGrades(meta.grades);
                 setAvailableSubjects(meta.subjects);
@@ -79,7 +79,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
             setIsLoadingTopics(true);
             setSelectedTopics([]);
             try {
-                const fetchedTopics = await examApi.fetchTopics(grade, subject);
+                const fetchedTopics = await fetchTopics(grade, subject);
                 if (mounted) setTopics(fetchedTopics);
             } catch {
                 if (mounted) setTopics([]);
@@ -130,7 +130,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
 
         setIsSubmitting(true);
         try {
-            const response = await examApi.generateQuestions({
+            const response = await generateQuestions({
                 grade, subject, topics: selectedTopics, counts, question_type: 'msq',
             });
             setSettings({ subject, grade, topics: selectedTopics, timerEnabled, duration: 1 });

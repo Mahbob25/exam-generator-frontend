@@ -11,7 +11,7 @@ import { GeneralFeedbackModal } from './FeedbackModals';
 import { saveExamResult } from '@/lib/history'; // Ensure this utility exists/is accessible
 import styles from './QuestionList.module.css';
 import { useToast } from '@/components/ui';
-import { examApi } from '@/lib/api/exam';
+import { submitGeneralFeedback } from '@/lib/api/exam';
 
 const SUBJECT_NAMES: Record<string, string> = {
     "seerah": "السيرة النبوية",
@@ -128,7 +128,7 @@ export function QuestionList() {
 
     const handleGeneralFeedback = async (type: any, message: string) => {
         try {
-            await examApi.submitGeneralFeedback({
+            await submitGeneralFeedback({
                 type,
                 message,
                 page: 'exam-list',

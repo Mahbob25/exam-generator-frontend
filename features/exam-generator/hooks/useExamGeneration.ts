@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useExamStore } from '../store';
-import { examApi } from '@/lib/api/exam';
+import { pollJobStatus } from '@/lib/api/exam';
 import { useToast } from '@/components/ui'; // Use new toast
 
 /**
@@ -42,7 +42,7 @@ export function useExamGeneration() {
 
         intervalRef.current = setInterval(async () => {
             try {
-                const newStatus = await examApi.pollJobStatus(id);
+                const newStatus = await pollJobStatus(id);
                 updateJobStatus(newStatus, newStatus.progress);
 
                 if (newStatus.status === 'COMPLETED') {

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, CheckCircle2, HelpCircle, Flag } from 'lucide-react';
 import { Question, QuestionTier, FeedbackCategory, QuestionFeedback } from '../types';
 import { ArabicTextNormalizer } from '@/lib/arabicNormalizer';
-import { examApi } from '@/lib/api/exam';
+import { submitQuestionFeedback } from '@/lib/api/exam';
 import { FeedbackModal } from './FeedbackModals';
 import styles from './QuestionCard.module.css';
 
@@ -114,7 +114,7 @@ export function QuestionCard({ question, index, onAnswer, metadata }: QuestionCa
                 },
             };
 
-            await examApi.submitQuestionFeedback(feedback);
+            await submitQuestionFeedback(feedback);
             setFeedbackMessage({ type: 'success', text: 'تم إرسال التقرير بنجاح. شكراً لك!' });
             setShowFeedbackModal(false);
 

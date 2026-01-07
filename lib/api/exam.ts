@@ -4,7 +4,7 @@
  * Exam Generator API Module
  * 
  * API functions for the exam generation feature.
- * Migrated from the existing lib/api.ts server actions.
+ * This is a Server Action file - all functions run on the server.
  * 
  * NOTE: This module uses server-side API key authentication (X-API-Key header),
  * not Firebase auth tokens. This is different from the learning runtime APIs.
@@ -18,9 +18,13 @@ import type {
     QuestionFeedback
 } from '@/lib/types';
 
-// Use env var directly to avoid importing from client-side modules
+// Use env var directly - runs on server so we have access to non-NEXT_PUBLIC vars
 const API_BASE_URL = process.env.NEXT_PUBLIC_EXAM_API_URL || 'http://localhost:8000';
 const BACKEND_API_KEY = process.env.BACKEND_API_KEY;
+
+// Debug logging (will show in server terminal)
+console.log('[ExamAPI] Module loaded. Base URL:', API_BASE_URL);
+console.log('[ExamAPI] API Key present:', !!BACKEND_API_KEY);
 
 /**
  * API Endpoints for Exam Generator
@@ -48,6 +52,8 @@ function getHeaders(apiKey?: string): Record<string, string> {
     const key = apiKey || BACKEND_API_KEY;
     if (key) {
         headers['X-API-Key'] = key;
+    } else {
+        console.warn('[ExamAPI] Warning: No API Key found!');
     }
 
     return headers;
@@ -61,6 +67,7 @@ function getHeaders(apiKey?: string): Record<string, string> {
  * Check backend health status
  */
 export async function checkHealth(): Promise<{ status: string; message: string }> {
+    console.log('[ExamAPI] checkHealth called');
     const res = await fetch(`${API_BASE_URL}${ENDPOINTS.health}`, {
         headers: getHeaders(),
     });
@@ -72,13 +79,17 @@ export async function checkHealth(): Promise<{ status: string; message: string }
  * Fetch available topics for a grade and subject
  */
 export async function fetchTopics(grade: number, subject: string): Promise<string[]> {
-    const res = await fetch(`${API_BASE_URL}${ENDPOINTS.topics(grade, subject)}`, {
+    const url = `${API_BASE_URL}${ENDPOINTS.topics(grade, subject)}`;
+    console.log(`[ExamAPI] fetchTopics called: ${url}`);
+
+    const res = await fetch(url, {
         headers: getHeaders(),
         cache: 'no-store',
     });
 
     if (!res.ok) {
         const text = await res.text();
+        console.error(`[ExamAPI] fetchTopics error: ${res.status} ${text}`);
         throw new Error(`Failed to fetch topics: ${res.status} ${text}`);
     }
 
@@ -90,7 +101,10 @@ export async function fetchTopics(grade: number, subject: string): Promise<strin
  * Start question generation job
  */
 export async function generateQuestions(payload: GenerationRequest): Promise<JobResponse> {
-    const res = await fetch(`${API_BASE_URL}${ENDPOINTS.generate}`, {
+    const url = `${API_BASE_URL}${ENDPOINTS.generate}`;
+    console.log(`[ExamAPI] generateQuestions called: ${url}`);
+
+    const res = await fetch(url, {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify(payload),
@@ -98,6 +112,7 @@ export async function generateQuestions(payload: GenerationRequest): Promise<Job
 
     if (!res.ok) {
         const text = await res.text();
+        console.error(`[ExamAPI] generateQuestions error: ${res.status} ${text}`);
         throw new Error(`Generation failed: ${res.status} ${text}`);
     }
 
@@ -108,13 +123,17 @@ export async function generateQuestions(payload: GenerationRequest): Promise<Job
  * Poll job status
  */
 export async function pollJobStatus(jobId: string, apiKey?: string): Promise<JobStatus> {
-    const res = await fetch(`${API_BASE_URL}${ENDPOINTS.job(jobId)}`, {
+    const url = `${API_BASE_URL}${ENDPOINTS.job(jobId)}`;
+    console.log(`[ExamAPI] pollJobStatus called: ${url}`);
+
+    const res = await fetch(url, {
         headers: getHeaders(apiKey),
         cache: 'no-store',
     });
 
     if (!res.ok) {
         const text = await res.text();
+        console.error(`[ExamAPI] pollJobStatus error: ${res.status} ${text}`);
         throw new Error(`Failed to poll job status: ${res.status} ${text}`);
     }
 
@@ -128,13 +147,19 @@ export async function fetchMetadata(): Promise<{
     grades: number[];
     subjects: Record<number, { id: string; name: string }[]>;
 }> {
-    const res = await fetch(`${API_BASE_URL}${ENDPOINTS.meta}`, {
+    const url = `${API_BASE_URL}${ENDPOINTS.meta}`;
+    console.log(`[ExamAPI] fetchMetadata called: ${url}`);
+
+    const res = await fetch(url, {
         headers: getHeaders(),
         cache: 'no-store',
     });
 
+    console.log(`[ExamAPI] fetchMetadata response status: ${res.status}`);
+
     if (!res.ok) {
         const text = await res.text();
+        console.error(`[ExamAPI] fetchMetadata error: ${text}`);
         throw new Error(`Failed to fetch metadata: ${res.status} ${text}`);
     }
 
@@ -148,7 +173,10 @@ export async function fetchIndexingMetadata(): Promise<{
     grades: number[];
     subjects: Record<number, { id: string; name: string }[]>;
 }> {
-    const res = await fetch(`${API_BASE_URL}${ENDPOINTS.metaIndexing}`, {
+    const url = `${API_BASE_URL}${ENDPOINTS.metaIndexing}`;
+    console.log(`[ExamAPI] fetchIndexingMetadata called: ${url}`);
+
+    const res = await fetch(url, {
         headers: getHeaders(),
         cache: 'no-store',
     });
@@ -248,26 +276,3 @@ export async function indexKnowledge(
     return res.json();
 }
 
-/**
- * Exam Generator API object with all endpoints
- * 
- * @example
- * import { examApi } from '@/lib/api';
- * 
- * const topics = await examApi.fetchTopics(7, 'science');
- * const job = await examApi.generateQuestions(payload);
- * const status = await examApi.pollJobStatus(job.job_id);
- */
-export const examApi = {
-    checkHealth,
-    fetchTopics,
-    generateQuestions,
-    pollJobStatus,
-    fetchMetadata,
-    fetchIndexingMetadata,
-    submitQuestionFeedback,
-    submitGeneralFeedback,
-    indexKnowledge,
-} as const;
-
-export default examApi;

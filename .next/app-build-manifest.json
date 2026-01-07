@@ -1,22 +1,9 @@
 {
   "pages": {
-    "/(dashboard)/learn/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/learn/page.css",
-      "static/chunks/app/(dashboard)/learn/page.js"
-    ],
-    "/(dashboard)/learn/loading": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/learn/loading.css",
-      "static/chunks/app/(dashboard)/learn/loading.js"
-    ],
-    "/(dashboard)/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/layout.css",
-      "static/chunks/app/(dashboard)/layout.js"
+      "static/chunks/app/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -41,6 +28,12 @@
       "static/css/app/(dashboard)/dashboard/loading.css",
       "static/chunks/app/(dashboard)/dashboard/loading.js"
     ],
+    "/(dashboard)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(dashboard)/layout.css",
+      "static/chunks/app/(dashboard)/layout.js"
+    ],
     "/(dashboard)/generate/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -52,6 +45,18 @@
       "static/chunks/main-app.js",
       "static/css/app/(dashboard)/generate/loading.css",
       "static/chunks/app/(dashboard)/generate/loading.js"
+    ],
+    "/(dashboard)/learn/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(dashboard)/learn/page.css",
+      "static/chunks/app/(dashboard)/learn/page.js"
+    ],
+    "/(dashboard)/learn/loading": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(dashboard)/learn/loading.css",
+      "static/chunks/app/(dashboard)/learn/loading.js"
     ]
   }
 }

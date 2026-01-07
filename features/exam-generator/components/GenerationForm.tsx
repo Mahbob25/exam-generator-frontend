@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2, Sparkles, BookOpen, GraduationCap } from 'lucide-react';
 import { useExamStore } from '../store';
-import { examApi } from '@/lib/api/exam';
+import { fetchMetadata, fetchTopics, generateQuestions } from '@/lib/api/exam';
 import { Button, useToast } from '@/components/ui';
 import { ExamSelect } from './ExamSelect';
 import { TopicSelector } from './TopicSelector';
@@ -44,7 +44,7 @@ export function GenerationForm() {
     useEffect(() => {
         async function loadMeta() {
             try {
-                const meta = await examApi.fetchMetadata();
+                const meta = await fetchMetadata();
                 if (!meta || !meta.grades) {
                     console.warn('[Form Warning] Empty metadata received');
                     return;
@@ -93,7 +93,7 @@ export function GenerationForm() {
             setSelectedTopics([]);
 
             try {
-                const fetchedTopics = await examApi.fetchTopics(grade, subject);
+                const fetchedTopics = await fetchTopics(grade, subject);
                 if (mounted) {
                     setTopics(fetchedTopics);
                 }
@@ -135,7 +135,7 @@ export function GenerationForm() {
         setError(null);
 
         try {
-            const response = await examApi.generateQuestions({
+            const response = await generateQuestions({
                 grade,
                 subject,
                 topics: selectedTopics,

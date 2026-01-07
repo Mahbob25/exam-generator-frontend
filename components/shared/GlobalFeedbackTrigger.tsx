@@ -5,7 +5,7 @@ import { MessageCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { GeneralFeedbackModal } from '@/features/exam-generator/components';
 import { useToast } from '@/components/ui';
-import { examApi } from '@/lib/api/exam';
+import { submitGeneralFeedback } from '@/lib/api/exam';
 
 /**
  * Global Feedback Trigger
@@ -31,7 +31,7 @@ export function GlobalFeedbackTrigger() {
 
     const handleSubmit = async (type: any, message: string) => {
         try {
-            await examApi.submitGeneralFeedback({
+            await submitGeneralFeedback({
                 type,
                 message,
                 page: getPageName(),

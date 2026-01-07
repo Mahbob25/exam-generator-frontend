@@ -1,3 +1,5 @@
+"use server";
+
 /**
  * Exam Generator API Module
  * 
@@ -16,9 +18,9 @@ import type {
     QuestionFeedback
 } from '@/lib/types';
 
-import { EXAM_API_URL } from './client';
-
-const API_BASE_URL = EXAM_API_URL;
+// Use env var directly to avoid importing from client-side modules
+const API_BASE_URL = process.env.NEXT_PUBLIC_EXAM_API_URL || 'http://localhost:8000';
+const BACKEND_API_KEY = process.env.BACKEND_API_KEY;
 
 /**
  * API Endpoints for Exam Generator
@@ -43,7 +45,7 @@ function getHeaders(apiKey?: string): Record<string, string> {
         'Content-Type': 'application/json',
     };
 
-    const key = apiKey || process.env.BACKEND_API_KEY;
+    const key = apiKey || BACKEND_API_KEY;
     if (key) {
         headers['X-API-Key'] = key;
     }
@@ -58,7 +60,7 @@ function getHeaders(apiKey?: string): Record<string, string> {
 /**
  * Check backend health status
  */
-async function checkHealth(): Promise<{ status: string; message: string }> {
+export async function checkHealth(): Promise<{ status: string; message: string }> {
     const res = await fetch(`${API_BASE_URL}${ENDPOINTS.health}`, {
         headers: getHeaders(),
     });
@@ -69,7 +71,7 @@ async function checkHealth(): Promise<{ status: string; message: string }> {
 /**
  * Fetch available topics for a grade and subject
  */
-async function fetchTopics(grade: number, subject: string): Promise<string[]> {
+export async function fetchTopics(grade: number, subject: string): Promise<string[]> {
     const res = await fetch(`${API_BASE_URL}${ENDPOINTS.topics(grade, subject)}`, {
         headers: getHeaders(),
         cache: 'no-store',
@@ -87,7 +89,7 @@ async function fetchTopics(grade: number, subject: string): Promise<string[]> {
 /**
  * Start question generation job
  */
-async function generateQuestions(payload: GenerationRequest): Promise<JobResponse> {
+export async function generateQuestions(payload: GenerationRequest): Promise<JobResponse> {
     const res = await fetch(`${API_BASE_URL}${ENDPOINTS.generate}`, {
         method: 'POST',
         headers: getHeaders(),
@@ -105,7 +107,7 @@ async function generateQuestions(payload: GenerationRequest): Promise<JobRespons
 /**
  * Poll job status
  */
-async function pollJobStatus(jobId: string, apiKey?: string): Promise<JobStatus> {
+export async function pollJobStatus(jobId: string, apiKey?: string): Promise<JobStatus> {
     const res = await fetch(`${API_BASE_URL}${ENDPOINTS.job(jobId)}`, {
         headers: getHeaders(apiKey),
         cache: 'no-store',
@@ -122,7 +124,7 @@ async function pollJobStatus(jobId: string, apiKey?: string): Promise<JobStatus>
 /**
  * Fetch quiz metadata (grades and subjects)
  */
-async function fetchMetadata(): Promise<{
+export async function fetchMetadata(): Promise<{
     grades: number[];
     subjects: Record<number, { id: string; name: string }[]>;
 }> {
@@ -142,7 +144,7 @@ async function fetchMetadata(): Promise<{
 /**
  * Fetch indexing metadata (from config file)
  */
-async function fetchIndexingMetadata(): Promise<{
+export async function fetchIndexingMetadata(): Promise<{
     grades: number[];
     subjects: Record<number, { id: string; name: string }[]>;
 }> {
@@ -166,7 +168,7 @@ async function fetchIndexingMetadata(): Promise<{
 /**
  * Submit question-specific feedback
  */
-async function submitQuestionFeedback(
+export async function submitQuestionFeedback(
     feedback: QuestionFeedback
 ): Promise<{ success: boolean; message: string }> {
     const res = await fetch(`${API_BASE_URL}${ENDPOINTS.feedback}`, {
@@ -186,7 +188,7 @@ async function submitQuestionFeedback(
 /**
  * Submit general feedback
  */
-async function submitGeneralFeedback(feedback: {
+export async function submitGeneralFeedback(feedback: {
     type: string;
     message: string;
     page?: string;
@@ -228,7 +230,7 @@ export interface KnowledgeIndexingResponse {
 /**
  * Submit knowledge for indexing
  */
-async function indexKnowledge(
+export async function indexKnowledge(
     payload: KnowledgeIndexingRequest,
     apiKey?: string
 ): Promise<KnowledgeIndexingResponse> {

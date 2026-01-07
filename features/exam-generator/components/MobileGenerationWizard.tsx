@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X, Loader2, Sparkles, Check, GraduationCap, BookOpen, Settings, ClipboardList } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -149,7 +150,16 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
 
     const subjectName = availableSubjects[grade]?.find(s => s.id === subject)?.name || subject;
 
-    return (
+    // State for portal mounting
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Don't render until mounted (needed for portal)
+    if (!mounted) return null;
+
+    const wizardContent = (
         <div
             style={{
                 position: 'fixed',
@@ -159,13 +169,13 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                 bottom: 0,
                 width: '100vw',
                 height: '100vh',
-                zIndex: 9999,
+                zIndex: 99999,
             }}
             className="bg-background flex flex-col"
             dir="rtl"
         >
             {/* Progress */}
-            <div className="px-4 py-3 pt-16 flex items-center justify-between gap-2">
+            <div className="px-4 py-3 pt-6 flex items-center justify-between gap-2">
                 {STEPS.map((step, i) => {
                     const Icon = step.icon;
                     const isActive = step.id === currentStep;
@@ -393,6 +403,9 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
             </footer>
         </div>
     );
+
+    // Use portal to render outside layout DOM tree
+    return createPortal(wizardContent, document.body);
 }
 
 export default MobileGenerationWizard;

@@ -1,9 +1,6 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/(dashboard)/learn/[subjectId]/page": "app/(dashboard)/learn/[subjectId]/page.js",
-  "/(dashboard)/learn/[subjectId]/[lessonId]/page": "app/(dashboard)/learn/[subjectId]/[lessonId]/page.js",
-  "/(dashboard)/learn/[subjectId]/[lessonId]/[conceptId]/page": "app/(dashboard)/learn/[subjectId]/[lessonId]/[conceptId]/page.js",
-  "/(dashboard)/generate/page": "app/(dashboard)/generate/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
   "/(dashboard)/learn/page": "app/(dashboard)/learn/page.js",
-  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js"
+  "/(dashboard)/generate/page": "app/(dashboard)/generate/page.js"
 }

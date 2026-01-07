@@ -1,9 +1,31 @@
 {
   "pages": {
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
+    ],
+    "/(auth)/signup/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(auth)/signup/page.css",
+      "static/chunks/app/(auth)/signup/page.js"
+    ],
+    "/(auth)/login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(auth)/login/page.css",
+      "static/chunks/app/(auth)/login/page.js"
+    ],
     "/(dashboard)/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/dashboard/page.css",
       "static/chunks/app/(dashboard)/dashboard/page.js"
     ],
     "/(dashboard)/dashboard/loading": [
@@ -18,18 +40,6 @@
       "static/css/app/(dashboard)/layout.css",
       "static/chunks/app/(dashboard)/layout.js"
     ],
-    "/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
-    ],
-    "/(auth)/login/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(auth)/login/page.css",
-      "static/chunks/app/(auth)/login/page.js"
-    ],
     "/(dashboard)/learn/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -42,36 +52,6 @@
       "static/css/app/(dashboard)/learn/loading.css",
       "static/chunks/app/(dashboard)/learn/loading.js"
     ],
-    "/(dashboard)/settings/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/settings/page.css",
-      "static/chunks/app/(dashboard)/settings/page.js"
-    ],
-    "/(dashboard)/settings/loading": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/settings/loading.css",
-      "static/chunks/app/(dashboard)/settings/loading.js"
-    ],
-    "/(dashboard)/learn/[subjectId]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/learn/[subjectId]/page.css",
-      "static/chunks/app/(dashboard)/learn/[subjectId]/page.js"
-    ],
-    "/(dashboard)/learn/[subjectId]/[lessonId]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/learn/[subjectId]/[lessonId]/page.css",
-      "static/chunks/app/(dashboard)/learn/[subjectId]/[lessonId]/page.js"
-    ],
-    "/(dashboard)/learn/[subjectId]/[lessonId]/[conceptId]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(dashboard)/learn/[subjectId]/[lessonId]/[conceptId]/page.css",
-      "static/chunks/app/(dashboard)/learn/[subjectId]/[lessonId]/[conceptId]/page.js"
-    ],
     "/(dashboard)/generate/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -83,11 +63,6 @@
       "static/chunks/main-app.js",
       "static/css/app/(dashboard)/generate/loading.css",
       "static/chunks/app/(dashboard)/generate/loading.js"
-    ],
-    "/_not-found/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

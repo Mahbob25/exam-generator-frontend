@@ -1,19 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
 import {
     GenerationForm,
     QuestionList,
     LoadingOverlay,
+    MobileQuestionFlow,
+    MobileGenerationWizard,
 } from '@/features/exam-generator/components';
 import { useExamGeneration } from '@/features/exam-generator/hooks/useExamGeneration';
 import { useExamStore } from '@/features/exam-generator/store';
 
 export default function GeneratePage() {
-    // Use the hook to handle polling effects
     const { isGenerating: hookIsGenerating, progress } = useExamGeneration();
+    const [isMobile, setIsMobile] = useState(false);
 
     const {
         questions,
@@ -21,11 +23,36 @@ export default function GeneratePage() {
         resetAll
     } = useExamStore();
 
+    // Detect mobile
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     const isGenerating = status?.status === 'PROCESSING' || status?.status === 'PENDING' || hookIsGenerating;
     const hasQuestions = questions && questions.length > 0;
-
-    // Derive stage for animation/render logic
     const stage = hasQuestions ? 'RESULTS' : (isGenerating ? 'GENERATING' : 'SELECTION');
+
+    // Mobile: Show fullscreen question flow for results
+    if (isMobile && stage === 'RESULTS' && questions.length > 0) {
+        return (
+            <MobileQuestionFlow
+                questions={questions}
+                onClose={resetAll}
+            />
+        );
+    }
+
+    // Mobile: Show wizard for selection stage
+    if (isMobile && stage === 'SELECTION') {
+        return (
+            <MobileGenerationWizard
+                onClose={() => {/* back to dashboard or do nothing */ }}
+            />
+        );
+    }
 
     return (
         <div className="relative">
@@ -105,4 +132,3 @@ export default function GeneratePage() {
         </div>
     );
 }
-

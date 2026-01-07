@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Loader2, Sparkles, Check, GraduationCap, BookOpen, Settings, ClipboardList } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, Sparkles, Check, GraduationCap, BookOpen, Settings, ClipboardList, Search, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useExamStore } from '../store';
 import { fetchMetadata, fetchTopics, generateQuestions } from '@/lib/api/exam';
 import { useToast } from '@/components/ui';
-import { TopicSelector } from './TopicSelector';
 import { ExamSelect } from './ExamSelect';
 
 interface MobileGenerationWizardProps {
@@ -31,7 +30,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
     // Form state
     const [availableGrades, setAvailableGrades] = useState<number[]>([]);
     const [availableSubjects, setAvailableSubjects] = useState<Record<number, { id: string; name: string }[]>>({});
-    const [grade, setGrade] = useState<number>(12);
+    const [grade, setGrade] = useState<number>(0);
     const [subject, setSubject] = useState<string>('');
     const [topics, setTopics] = useState<string[]>([]);
     const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
@@ -39,6 +38,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [counts, setCounts] = useState({ msq: 5, true_false: 3, fill_blank: 2 });
     const [timerEnabled, setTimerEnabled] = useState(false);
+    const [topicSearch, setTopicSearch] = useState('');
 
     // Load metadata
     useEffect(() => {
@@ -48,12 +48,6 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                 if (!meta?.grades) return;
                 setAvailableGrades(meta.grades);
                 setAvailableSubjects(meta.subjects);
-                if (meta.grades.length > 0) {
-                    const defaultGrade = meta.grades.includes(12) ? 12 : meta.grades[0];
-                    setGrade(defaultGrade);
-                    const subjectsForGrade = meta.subjects[defaultGrade];
-                    if (subjectsForGrade?.length > 0) setSubject(subjectsForGrade[0].id);
-                }
             } catch (e) {
                 toast.error('فشل تحميل البيانات');
             }
@@ -61,19 +55,9 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
         loadMeta();
     }, []);
 
-    // Update subject when grade changes
-    useEffect(() => {
-        const subjectsForGrade = availableSubjects[grade];
-        if (subjectsForGrade?.length > 0) {
-            if (!subjectsForGrade.find(s => s.id === subject)) {
-                setSubject(subjectsForGrade[0].id);
-            }
-        }
-    }, [grade, availableSubjects]);
-
     // Load topics when subject changes
     useEffect(() => {
-        if (!subject) return;
+        if (!subject || !grade) return;
         let mounted = true;
         async function load() {
             setIsLoadingTopics(true);
@@ -121,13 +105,6 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
             return;
         }
 
-        const total = counts.msq + counts.true_false + counts.fill_blank;
-        const maxAllowed = selectedTopics.length * 15;
-        if (total > maxAllowed) {
-            toast.error(`الحد الأقصى ${maxAllowed} سؤال`);
-            return;
-        }
-
         setIsSubmitting(true);
         try {
             const response = await generateQuestions({
@@ -141,73 +118,77 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
         }
     };
 
-    const slideVariants = {
-        enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-        center: { x: 0, opacity: 1 },
-        exit: (dir: number) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 }),
+    const toggleTopic = (topic: string) => {
+        setSelectedTopics(prev =>
+            prev.includes(topic)
+                ? prev.filter(t => t !== topic)
+                : [...prev, topic]
+        );
     };
+
+    const filteredTopics = topics.filter(t =>
+        t.toLowerCase().includes(topicSearch.toLowerCase())
+    );
 
     const subjectName = availableSubjects[grade]?.find(s => s.id === subject)?.name || subject;
     const currentStepData = STEPS.find(s => s.id === currentStep);
 
-    // Render wizard content directly (no portal needed)
-
-    const wizardContent = (
+    return (
         <div
-            className="fixed inset-0 flex flex-col overflow-hidden"
-            style={{ zIndex: 99999 }}
+            className="fixed inset-0 z-[99999] flex flex-col bg-gradient-to-b from-slate-900 via-slate-900 to-purple-950"
+            style={{ height: '100dvh' }}
             dir="rtl"
         >
-            {/* Premium gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/5" />
-
-            {/* Header with step info */}
-            <header className="relative shrink-0 pt-4 pb-2 px-4">
-                {/* Current step title */}
+            {/* === HEADER === */}
+            <header className="shrink-0 px-4 pt-3 pb-4 bg-gradient-to-b from-black/20 to-transparent">
+                {/* Step title */}
                 <motion.div
                     key={currentStep}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-4"
                 >
-                    <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
+                    <h1 className="text-2xl font-bold text-white">
                         {currentStepData?.title}
                     </h1>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-sm text-white/60 mt-1">
                         الخطوة {currentStep} من {STEPS.length}
                     </p>
                 </motion.div>
 
-                {/* Progress indicators */}
-                <div className="flex items-center justify-center gap-2">
+                {/* Progress steps */}
+                <div className="flex items-center justify-center gap-1">
                     {STEPS.map((step, i) => {
-                        const Icon = step.icon;
                         const isActive = step.id === currentStep;
                         const isCompleted = step.id < currentStep;
+                        const Icon = step.icon;
 
                         return (
                             <React.Fragment key={step.id}>
-                                {/* Connector line */}
                                 {i > 0 && (
                                     <div className={cn(
-                                        "h-0.5 w-8 rounded-full transition-colors duration-300",
-                                        step.id <= currentStep ? "bg-primary" : "bg-muted"
+                                        "w-8 h-1 rounded-full transition-all duration-500",
+                                        step.id <= currentStep
+                                            ? "bg-gradient-to-r from-purple-500 to-pink-500"
+                                            : "bg-white/10"
                                     )} />
                                 )}
-
-                                {/* Step circle */}
                                 <motion.div
-                                    animate={{ scale: isActive ? 1.15 : 1 }}
+                                    animate={{ scale: isActive ? 1.1 : 1 }}
                                     className={cn(
-                                        "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm",
+                                        "w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300",
                                         isActive
-                                            ? "bg-gradient-to-br from-primary to-purple-600 text-white shadow-lg shadow-primary/30"
+                                            ? "bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/50"
                                             : isCompleted
-                                                ? "bg-primary/20 text-primary"
-                                                : "bg-muted/80 text-muted-foreground"
+                                                ? "bg-purple-500/30 text-purple-300"
+                                                : "bg-white/10 text-white/40"
                                     )}
                                 >
-                                    {isCompleted ? <Check size={18} strokeWidth={3} /> : <Icon size={18} />}
+                                    {isCompleted ? (
+                                        <Check size={20} className="text-white" strokeWidth={3} />
+                                    ) : (
+                                        <Icon size={20} className={isActive ? "text-white" : ""} />
+                                    )}
                                 </motion.div>
                             </React.Fragment>
                         );
@@ -215,54 +196,75 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                 </div>
             </header>
 
-            {/* Content area */}
-            <main className="relative flex-1 overflow-y-auto px-5 py-4">
-                <AnimatePresence mode="wait" custom={direction}>
+            {/* === CONTENT === */}
+            <main className="flex-1 overflow-y-auto px-4 pb-4">
+                <AnimatePresence mode="wait" initial={false}>
                     <motion.div
                         key={currentStep}
-                        custom={direction}
-                        variants={slideVariants}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        transition={{ duration: 0.25, ease: 'easeOut' }}
+                        initial={{ opacity: 0, x: direction > 0 ? 50 : -50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: direction > 0 ? -50 : 50 }}
+                        transition={{ duration: 0.2 }}
                     >
                         {/* Step 1: Grade & Subject */}
                         {currentStep === 1 && (
-                            <div className="space-y-6">
-                                {/* Grade selector */}
-                                <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-sm">
-                                    <label className="block text-sm font-semibold mb-3 text-foreground">
-                                        🎓 الصف الدراسي
+                            <div className="space-y-4">
+                                {/* Grade */}
+                                <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
+                                    <label className="flex items-center gap-2 text-white font-semibold mb-3">
+                                        <span className="text-2xl">🎓</span>
+                                        الصف الدراسي
                                     </label>
-                                    <ExamSelect
-                                        value={grade}
-                                        onChange={(val) => setGrade(Number(val))}
-                                        options={availableGrades.map(g => ({ value: g, label: `الصف ${g}` }))}
-                                        placeholder="اختر الصف"
-                                    />
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {availableGrades.map(g => (
+                                            <button
+                                                key={g}
+                                                onClick={() => {
+                                                    setGrade(g);
+                                                    setSubject('');
+                                                }}
+                                                className={cn(
+                                                    "py-3 rounded-xl font-bold transition-all",
+                                                    grade === g
+                                                        ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
+                                                        : "bg-white/10 text-white/70 hover:bg-white/20"
+                                                )}
+                                            >
+                                                {g}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
 
-                                {/* Subject selector with animation */}
+                                {/* Subject - only show when grade selected */}
                                 <AnimatePresence>
-                                    {grade && (
+                                    {grade > 0 && (
                                         <motion.div
                                             initial={{ opacity: 0, y: 20, scale: 0.95 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                            transition={{ duration: 0.3, ease: 'easeOut' }}
-                                            className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-sm"
+                                            exit={{ opacity: 0, scale: 0.95 }}
+                                            className="bg-white/5 backdrop-blur-xl rounded-3xl p-5 border border-white/10"
                                         >
-                                            <label className="block text-sm font-semibold mb-3 text-foreground">
-                                                📚 المادة الدراسية
+                                            <label className="flex items-center gap-2 text-white font-semibold mb-3">
+                                                <span className="text-2xl">📚</span>
+                                                المادة الدراسية
                                             </label>
-                                            <ExamSelect
-                                                value={subject}
-                                                onChange={(val) => setSubject(String(val))}
-                                                options={availableSubjects[grade]?.map(s => ({ value: s.id, label: s.name })) || []}
-                                                placeholder="اختر المادة"
-                                                autoFocus
-                                            />
+                                            <div className="grid grid-cols-2 gap-2">
+                                                {availableSubjects[grade]?.map(s => (
+                                                    <button
+                                                        key={s.id}
+                                                        onClick={() => setSubject(s.id)}
+                                                        className={cn(
+                                                            "py-3 px-4 rounded-xl font-medium transition-all text-sm",
+                                                            subject === s.id
+                                                                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
+                                                                : "bg-white/10 text-white/70 hover:bg-white/20"
+                                                        )}
+                                                    >
+                                                        {s.name}
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -271,55 +273,106 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
 
                         {/* Step 2: Topics */}
                         {currentStep === 2 && (
-                            <div>
-                                <div className="flex items-center justify-between mb-4">
-                                    <h2 className="text-lg font-bold">📝 اختر المواضيع</h2>
-                                    <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-bold rounded-full">
-                                        {selectedTopics.length} مختار
-                                    </span>
+                            <div className="space-y-4">
+                                {/* Search */}
+                                <div className="relative">
+                                    <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
+                                    <input
+                                        type="text"
+                                        placeholder="ابحث عن موضوع..."
+                                        value={topicSearch}
+                                        onChange={(e) => setTopicSearch(e.target.value)}
+                                        className="w-full py-3 pr-12 pl-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder:text-white/40 focus:outline-none focus:border-purple-500"
+                                    />
                                 </div>
-                                <TopicSelector
-                                    topics={topics}
-                                    selectedTopics={selectedTopics}
-                                    onChange={setSelectedTopics}
-                                    isLoading={isLoadingTopics}
-                                />
+
+                                {/* Quick actions */}
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setSelectedTopics(filteredTopics)}
+                                        className="flex-1 py-2 rounded-xl bg-purple-500/20 text-purple-300 font-medium text-sm"
+                                    >
+                                        ✓ تحديد الكل
+                                    </button>
+                                    <button
+                                        onClick={() => setSelectedTopics([])}
+                                        className="flex-1 py-2 rounded-xl bg-white/10 text-white/60 font-medium text-sm"
+                                    >
+                                        ✕ إلغاء الكل
+                                    </button>
+                                </div>
+
+                                {/* Topics grid */}
+                                {isLoadingTopics ? (
+                                    <div className="flex items-center justify-center py-12">
+                                        <Loader2 className="animate-spin text-purple-400" size={32} />
+                                    </div>
+                                ) : (
+                                    <div className="space-y-2">
+                                        {filteredTopics.map(topic => {
+                                            const isSelected = selectedTopics.includes(topic);
+                                            return (
+                                                <button
+                                                    key={topic}
+                                                    onClick={() => toggleTopic(topic)}
+                                                    className={cn(
+                                                        "w-full p-4 rounded-2xl text-right transition-all flex items-center gap-3",
+                                                        isSelected
+                                                            ? "bg-gradient-to-r from-purple-500/30 to-pink-500/30 border-2 border-purple-500"
+                                                            : "bg-white/5 border border-white/10 hover:bg-white/10"
+                                                    )}
+                                                >
+                                                    <div className={cn(
+                                                        "w-6 h-6 rounded-lg flex items-center justify-center shrink-0",
+                                                        isSelected ? "bg-purple-500" : "bg-white/10"
+                                                    )}>
+                                                        {isSelected && <Check size={14} className="text-white" />}
+                                                    </div>
+                                                    <span className={cn(
+                                                        "flex-1 font-medium",
+                                                        isSelected ? "text-white" : "text-white/70"
+                                                    )}>
+                                                        {topic}
+                                                    </span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                )}
                             </div>
                         )}
 
-                        {/* Step 3: Config */}
+                        {/* Step 3: Settings */}
                         {currentStep === 3 && (
-                            <div className="space-y-5">
-                                <h2 className="text-lg font-bold mb-4">⚙️ توزيع الأسئلة</h2>
-
+                            <div className="space-y-4">
                                 {[
-                                    { id: 'msq', label: 'اختيار من متعدد', icon: '🔢', color: 'from-blue-500 to-blue-600' },
-                                    { id: 'true_false', label: 'صح / خطأ', icon: '✅', color: 'from-green-500 to-green-600' },
-                                    { id: 'fill_blank', label: 'أكمل الفراغ', icon: '✍️', color: 'from-purple-500 to-purple-600' },
+                                    { id: 'msq', label: 'اختيار من متعدد', icon: '🔢', color: 'from-blue-500 to-cyan-500' },
+                                    { id: 'true_false', label: 'صح / خطأ', icon: '✅', color: 'from-green-500 to-emerald-500' },
+                                    { id: 'fill_blank', label: 'أكمل الفراغ', icon: '✍️', color: 'from-orange-500 to-yellow-500' },
                                 ].map((type) => (
                                     <div
                                         key={type.id}
-                                        className="flex items-center justify-between p-4 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-sm"
+                                        className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 flex items-center justify-between"
                                     >
-                                        <span className="flex items-center gap-3">
-                                            <span className={`w-10 h-10 rounded-xl bg-gradient-to-br ${type.color} flex items-center justify-center text-lg shadow-sm`}>
+                                        <div className="flex items-center gap-3">
+                                            <span className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${type.color} flex items-center justify-center text-xl`}>
                                                 {type.icon}
                                             </span>
-                                            <span className="font-medium">{type.label}</span>
-                                        </span>
-                                        <div className="flex items-center gap-2">
+                                            <span className="font-medium text-white">{type.label}</span>
+                                        </div>
+                                        <div className="flex items-center gap-3">
                                             <button
                                                 onClick={() => setCounts({ ...counts, [type.id]: Math.max(0, counts[type.id as keyof typeof counts] - 1) })}
-                                                className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center font-bold text-lg active:scale-95 transition-transform"
+                                                className="w-10 h-10 rounded-xl bg-white/10 text-white font-bold text-xl"
                                             >
                                                 −
                                             </button>
-                                            <span className="w-8 text-center font-bold text-lg">
+                                            <span className="w-8 text-center text-white font-bold text-xl">
                                                 {counts[type.id as keyof typeof counts]}
                                             </span>
                                             <button
                                                 onClick={() => setCounts({ ...counts, [type.id]: Math.min(15, counts[type.id as keyof typeof counts] + 1) })}
-                                                className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-lg active:scale-95 transition-transform"
+                                                className="w-10 h-10 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-xl"
                                             >
                                                 +
                                             </button>
@@ -328,28 +381,26 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                                 ))}
 
                                 {/* Timer toggle */}
-                                <div className="flex items-center justify-between p-4 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50">
+                                <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 flex items-center justify-between">
                                     <div className="flex items-center gap-3">
-                                        <span className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-lg shadow-sm">
-                                            ⏰
+                                        <span className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-xl">
+                                            ⏱️
                                         </span>
                                         <div>
-                                            <div className="font-medium">المؤقت</div>
-                                            <div className="text-xs text-muted-foreground">دقيقة لكل سؤال</div>
+                                            <div className="font-medium text-white">المؤقت</div>
+                                            <div className="text-sm text-white/50">دقيقة لكل سؤال</div>
                                         </div>
                                     </div>
                                     <button
                                         onClick={() => setTimerEnabled(!timerEnabled)}
                                         className={cn(
-                                            "w-14 h-8 rounded-full transition-all duration-300 relative",
-                                            timerEnabled
-                                                ? "bg-gradient-to-r from-primary to-purple-600"
-                                                : "bg-muted"
+                                            "w-14 h-8 rounded-full transition-all relative",
+                                            timerEnabled ? "bg-gradient-to-r from-purple-500 to-pink-500" : "bg-white/20"
                                         )}
                                     >
-                                        <motion.span
-                                            animate={{ x: timerEnabled ? -24 : 0 }}
-                                            className="absolute top-1 right-1 w-6 h-6 rounded-full bg-white shadow-md"
+                                        <motion.div
+                                            animate={{ x: timerEnabled ? -22 : 0 }}
+                                            className="absolute top-1 right-1 w-6 h-6 rounded-full bg-white shadow"
                                         />
                                     </button>
                                 </div>
@@ -359,28 +410,26 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                         {/* Step 4: Review */}
                         {currentStep === 4 && (
                             <div className="space-y-4">
-                                <h2 className="text-lg font-bold mb-4">📋 مراجعة الاختبار</h2>
-
-                                <div className="bg-gradient-to-br from-primary/5 to-purple-500/5 rounded-2xl p-5 border border-primary/20 space-y-4">
+                                <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-xl rounded-3xl p-6 border border-purple-500/30">
                                     {[
                                         { label: 'الصف', value: `الصف ${grade}`, icon: '🎓' },
                                         { label: 'المادة', value: subjectName, icon: '📚' },
                                         { label: 'المواضيع', value: `${selectedTopics.length} موضوع`, icon: '📝' },
-                                        { label: 'عدد الأسئلة', value: counts.msq + counts.true_false + counts.fill_blank, icon: '❓' },
-                                        { label: 'المؤقت', value: timerEnabled ? 'مفعل' : 'معطل', icon: '⏰' },
+                                        { label: 'الأسئلة', value: `${counts.msq + counts.true_false + counts.fill_blank} سؤال`, icon: '❓' },
+                                        { label: 'المؤقت', value: timerEnabled ? 'مفعل' : 'معطل', icon: '⏱️' },
                                     ].map((item, i) => (
-                                        <div key={i} className="flex items-center justify-between">
-                                            <span className="flex items-center gap-2 text-muted-foreground">
+                                        <div key={i} className="flex items-center justify-between py-3 border-b border-white/10 last:border-0">
+                                            <span className="flex items-center gap-2 text-white/60">
                                                 <span>{item.icon}</span>
-                                                <span>{item.label}</span>
+                                                {item.label}
                                             </span>
-                                            <span className="font-bold">{item.value}</span>
+                                            <span className="font-bold text-white">{item.value}</span>
                                         </div>
                                     ))}
                                 </div>
 
-                                <p className="text-sm text-muted-foreground text-center mt-4">
-                                    ✨ كل شيء جاهز! اضغط على زر التوليد للبدء
+                                <p className="text-center text-white/50 text-sm">
+                                    ✨ كل شيء جاهز للتوليد!
                                 </p>
                             </div>
                         )}
@@ -388,34 +437,37 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                 </AnimatePresence>
             </main>
 
-            {/* Fixed footer */}
-            <footer className="relative shrink-0 px-4 py-4 bg-background/95 backdrop-blur-xl border-t border-border/50">
-                {/* Hint text */}
-                {currentStep === 1 && !canProceed() && (
-                    <p className="text-xs text-muted-foreground text-center mb-3">
-                        👆 اختر الصف والمادة للمتابعة
-                    </p>
-                )}
-                {currentStep === 2 && !canProceed() && (
-                    <p className="text-xs text-muted-foreground text-center mb-3">
-                        👆 اختر موضوع واحد على الأقل
+            {/* === FOOTER === */}
+            <footer className="shrink-0 px-4 pb-4 pt-2 bg-gradient-to-t from-black/40 to-transparent">
+                {/* Hint */}
+                {!canProceed() && (
+                    <p className="text-center text-white/40 text-sm mb-3">
+                        {currentStep === 1 && "👆 اختر الصف والمادة"}
+                        {currentStep === 2 && "👆 اختر موضوع واحد على الأقل"}
                     </p>
                 )}
 
-                {/* Navigation buttons */}
-                <div className="flex items-center justify-between gap-3">
+                {/* Selected count for step 2 */}
+                {currentStep === 2 && selectedTopics.length > 0 && (
+                    <p className="text-center text-purple-400 text-sm mb-3 font-medium">
+                        ✓ تم اختيار {selectedTopics.length} موضوع
+                    </p>
+                )}
+
+                {/* Buttons */}
+                <div className="flex gap-3">
                     <button
                         onClick={goPrev}
                         disabled={currentStep === 1}
                         className={cn(
-                            "flex items-center gap-2 px-5 py-3 rounded-xl font-medium transition-all",
+                            "px-6 py-4 rounded-2xl font-bold transition-all flex items-center gap-2",
                             currentStep === 1
-                                ? "text-muted-foreground/40 bg-muted/50"
-                                : "text-foreground bg-muted active:scale-95"
+                                ? "bg-white/5 text-white/20"
+                                : "bg-white/10 text-white hover:bg-white/20"
                         )}
                     >
                         <ChevronRight size={20} />
-                        <span>السابق</span>
+                        السابق
                     </button>
 
                     {currentStep < 4 ? (
@@ -423,25 +475,25 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                             onClick={goNext}
                             disabled={!canProceed()}
                             className={cn(
-                                "flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all",
+                                "flex-1 py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2",
                                 canProceed()
-                                    ? "text-white bg-gradient-to-r from-primary to-purple-600 shadow-lg shadow-primary/30 active:scale-[0.98]"
-                                    : "text-muted-foreground/50 bg-muted"
+                                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30"
+                                    : "bg-white/10 text-white/30"
                             )}
                         >
-                            <span>التالي</span>
+                            التالي
                             <ChevronLeft size={20} />
                         </button>
                     ) : (
                         <button
                             onClick={handleSubmit}
                             disabled={isSubmitting}
-                            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-primary via-purple-600 to-pink-500 shadow-lg shadow-primary/30 active:scale-[0.98] transition-all"
+                            className="flex-1 py-4 rounded-2xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2"
                         >
                             {isSubmitting ? (
                                 <><Loader2 size={20} className="animate-spin" /> جاري التوليد...</>
                             ) : (
-                                <><Sparkles size={20} /> توليد الاختبار ✨</>
+                                <><Sparkles size={20} /> توليد الاختبار</>
                             )}
                         </button>
                     )}
@@ -449,8 +501,6 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
             </footer>
         </div>
     );
-
-    return wizardContent;
 }
 
 export default MobileGenerationWizard;

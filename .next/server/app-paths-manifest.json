@@ -1,16 +1,9 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/(auth)/signup/page": "app/(auth)/signup/page.js",
-  "/admin/index-knowledge/page": "app/admin/index-knowledge/page.js",
-  "/page": "app/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
-  "/(dashboard)/generate/page": "app/(dashboard)/generate/page.js",
-  "/(dashboard)/history/page": "app/(dashboard)/history/page.js",
-  "/(dashboard)/learn/[subjectId]/[lessonId]/[conceptId]/page": "app/(dashboard)/learn/[subjectId]/[lessonId]/[conceptId]/page.js",
-  "/(dashboard)/learn/[subjectId]/[lessonId]/page": "app/(dashboard)/learn/[subjectId]/[lessonId]/page.js",
   "/(dashboard)/learn/[subjectId]/page": "app/(dashboard)/learn/[subjectId]/page.js",
+  "/(dashboard)/learn/[subjectId]/[lessonId]/page": "app/(dashboard)/learn/[subjectId]/[lessonId]/page.js",
+  "/(dashboard)/learn/[subjectId]/[lessonId]/[conceptId]/page": "app/(dashboard)/learn/[subjectId]/[lessonId]/[conceptId]/page.js",
+  "/(dashboard)/generate/page": "app/(dashboard)/generate/page.js",
   "/(dashboard)/learn/page": "app/(dashboard)/learn/page.js",
-  "/(dashboard)/settings/page": "app/(dashboard)/settings/page.js"
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js"
 }

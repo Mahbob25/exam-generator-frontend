@@ -29,13 +29,19 @@
 
 .content {
     flex: 1;
-    padding: 1.5rem;
+    padding: 1rem;
+    padding-bottom: calc(1rem + 80px);
+    /* Account for bottom nav */
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth iOS scrolling */
 }
 
 @media (min-width: 768px) {
     .content {
         padding: 2rem;
+        padding-bottom: 2rem;
+        /* No bottom nav on desktop */
     }
 }
 

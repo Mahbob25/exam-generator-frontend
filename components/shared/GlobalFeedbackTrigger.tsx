@@ -48,7 +48,7 @@ export function GlobalFeedbackTrigger() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 left-6 z-50 w-14 h-14 bg-gradient-to-br from-primary to-purple-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95 hover:shadow-xl"
+                className="fixed bottom-20 md:bottom-6 left-6 z-50 w-14 h-14 bg-gradient-to-br from-primary to-purple-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95 hover:shadow-xl"
                 title="شاركنا رأيك"
                 aria-label="شاركنا رأيك - إرسال ملاحظات"
             >

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Sun, Moon, Monitor, LogOut, User, Sparkles } from 'lucide-react';
+import { Sun, Moon, Monitor, LogOut, User, Sparkles } from 'lucide-react';
 import { Sidebar, NavIcons, PageContainer } from '@/components/layout';
 import { ProtectedRoute } from '@/components/shared';
 import { useUIStore } from '@/lib/store/useUIStore';
@@ -46,14 +46,10 @@ const ThemeToggle = () => {
     );
 };
 
-// Dashboard header for mobile
-const DashboardHeader = ({ onMenuClick }: { onMenuClick: () => void }) => {
+// Dashboard header for mobile (top bar with logo and actions)
+const DashboardHeader = () => {
     return (
         <header className={styles.header}>
-            <button onClick={onMenuClick} className={styles.menuButton} aria-label="فتح القائمة">
-                <Menu size={24} />
-            </button>
-
             <Link href="/dashboard" className={styles.logo}>
                 <span className={styles.logoIcon}>📚</span>
                 <span className={styles.logoText}>ذاكر</span>
@@ -148,7 +144,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {/* Main Content Area */}
                 <div className={`${styles.main} ${!isMobile && isSidebarCollapsed ? styles.mainExpanded : ''}`}>
                     {/* Mobile Header */}
-                    {isMobile && <DashboardHeader onMenuClick={() => setSidebarOpen(true)} />}
+                    {isMobile && <DashboardHeader />}
 
                     {/* Page Content */}
                     <main className={styles.content}>

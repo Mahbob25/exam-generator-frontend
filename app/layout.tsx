@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cairo } from "next/font/google"; // Using Cairo as requested for Arabic support
 import "@/styles/variables.css";
 import "@/styles/animations.css";
@@ -14,9 +14,30 @@ const cairo = Cairo({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: "#4f46e5",
+};
+
 export const metadata: Metadata = {
   title: "ذاكر - منصة التعلم الذكي",
   description: "منصة ذاكر تساعدك على استيعاب المفاهيم بطريقة تفاعلية وشخصية، مع اختبارات ذكية وتجربة تعلم تتكيف مع مستواك.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "ذاكر",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    apple: "/icons/icon-192.png",
+  },
 };
 
 export default function RootLayout({

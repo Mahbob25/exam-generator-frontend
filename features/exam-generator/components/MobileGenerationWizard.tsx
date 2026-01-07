@@ -165,7 +165,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
             dir="rtl"
         >
             {/* Progress */}
-            <div className="px-4 py-3 flex items-center justify-between gap-2">
+            <div className="px-4 py-3 pt-16 flex items-center justify-between gap-2">
                 {STEPS.map((step, i) => {
                     const Icon = step.icon;
                     const isActive = step.id === currentStep;
@@ -341,46 +341,55 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
             </div>
 
             {/* Footer */}
-            <footer className="flex items-center justify-between px-4 py-4 border-t border-border/50 bg-background/80 backdrop-blur-lg safe-area-pb">
-                <button
-                    onClick={goPrev}
-                    disabled={currentStep === 1}
-                    className={cn(
-                        "flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all",
-                        currentStep === 1 ? "text-muted-foreground/50" : "text-foreground bg-muted active:scale-95"
-                    )}
-                >
-                    <ChevronRight size={20} />
-                    <span>السابق</span>
-                </button>
-
-                {currentStep < 4 ? (
-                    <button
-                        onClick={goNext}
-                        disabled={!canProceed()}
-                        className={cn(
-                            "flex items-center gap-2 px-6 py-2.5 rounded-xl font-medium transition-all",
-                            canProceed()
-                                ? "text-primary-foreground bg-primary active:scale-95 shadow-md"
-                                : "text-muted-foreground/50 bg-muted"
-                        )}
-                    >
-                        <span>التالي</span>
-                        <ChevronLeft size={20} />
-                    </button>
-                ) : (
-                    <button
-                        onClick={handleSubmit}
-                        disabled={isSubmitting}
-                        className="flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-primary-foreground bg-gradient-to-r from-primary to-purple-600 active:scale-95 shadow-lg"
-                    >
-                        {isSubmitting ? (
-                            <><Loader2 size={20} className="animate-spin" /> جاري التوليد...</>
-                        ) : (
-                            <><Sparkles size={20} /> توليد الاختبار</>
-                        )}
-                    </button>
+            <footer className="flex flex-col gap-2 px-4 py-4 border-t border-border/50 bg-background/95 backdrop-blur-lg safe-area-pb" style={{ zIndex: 100 }}>
+                {/* Hint text when button is disabled */}
+                {currentStep === 1 && !canProceed() && (
+                    <p className="text-xs text-muted-foreground text-center">
+                        اختر الصف والمادة للمتابعة
+                    </p>
                 )}
+
+                <div className="flex items-center justify-between">
+                    <button
+                        onClick={goPrev}
+                        disabled={currentStep === 1}
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all",
+                            currentStep === 1 ? "text-muted-foreground/50" : "text-foreground bg-muted active:scale-95"
+                        )}
+                    >
+                        <ChevronRight size={20} />
+                        <span>السابق</span>
+                    </button>
+
+                    {currentStep < 4 ? (
+                        <button
+                            onClick={goNext}
+                            disabled={!canProceed()}
+                            className={cn(
+                                "flex items-center gap-2 px-6 py-2.5 rounded-xl font-medium transition-all",
+                                canProceed()
+                                    ? "text-primary-foreground bg-primary active:scale-95 shadow-md"
+                                    : "text-muted-foreground/50 bg-muted"
+                            )}
+                        >
+                            <span>التالي</span>
+                            <ChevronLeft size={20} />
+                        </button>
+                    ) : (
+                        <button
+                            onClick={handleSubmit}
+                            disabled={isSubmitting}
+                            className="flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-primary-foreground bg-gradient-to-r from-primary to-purple-600 active:scale-95 shadow-lg"
+                        >
+                            {isSubmitting ? (
+                                <><Loader2 size={20} className="animate-spin" /> جاري التوليد...</>
+                            ) : (
+                                <><Sparkles size={20} /> توليد الاختبار</>
+                            )}
+                        </button>
+                    )}
+                </div>
             </footer>
         </div>
     );

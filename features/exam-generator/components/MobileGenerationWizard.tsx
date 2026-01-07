@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Loader2, Sparkles, Check, GraduationCap, BookOpen, Settings, ClipboardList } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -151,13 +150,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
     const subjectName = availableSubjects[grade]?.find(s => s.id === subject)?.name || subject;
     const currentStepData = STEPS.find(s => s.id === currentStep);
 
-    // State for portal mounting
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    if (!mounted) return null;
+    // Render wizard content directly (no portal needed)
 
     const wizardContent = (
         <div
@@ -458,7 +451,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
         </div>
     );
 
-    return createPortal(wizardContent, document.body);
+    return wizardContent;
 }
 
 export default MobileGenerationWizard;

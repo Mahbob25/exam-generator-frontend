@@ -150,7 +150,20 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
     const subjectName = availableSubjects[grade]?.find(s => s.id === subject)?.name || subject;
 
     return (
-        <div className="fixed inset-0 z-[100] bg-background flex flex-col" dir="rtl">
+        <div
+            style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                width: '100vw',
+                height: '100vh',
+                zIndex: 9999,
+            }}
+            className="bg-background flex flex-col"
+            dir="rtl"
+        >
             {/* Header */}
             <header className="flex items-center justify-between px-4 py-3 border-b border-border/50 bg-background/80 backdrop-blur-lg safe-area-pt">
                 <button onClick={onClose} className="p-2 -m-2 rounded-full text-muted-foreground hover:text-foreground">

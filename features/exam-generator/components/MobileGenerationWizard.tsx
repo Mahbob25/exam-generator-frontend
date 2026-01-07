@@ -216,7 +216,7 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
             </header>
 
             {/* Content area */}
-            <main className="relative flex-1 min-h-0 overflow-hidden">
+            <main className="relative flex-1 overflow-y-auto px-5 py-4">
                 <AnimatePresence mode="wait" custom={direction}>
                     <motion.div
                         key={currentStep}
@@ -226,7 +226,6 @@ export function MobileGenerationWizard({ onClose }: MobileGenerationWizardProps)
                         animate="center"
                         exit="exit"
                         transition={{ duration: 0.25, ease: 'easeOut' }}
-                        className="absolute inset-0 overflow-y-auto px-5 py-6"
                     >
                         {/* Step 1: Grade & Subject */}
                         {currentStep === 1 && (
